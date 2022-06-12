@@ -4,23 +4,26 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System;
 
 class Program
 {
     static void Main(string[] args)
     {
-        FileReader();
+        string[] lines = FileReader();
+        CreateBruteAutomate(lines, 116);
     }
 
-  public static void FileReader()
+    private static string[] FileReader()
     {
+        string[] lines = { "" };
+
         Console.WriteLine(" Enter the path to te .dks format file: ");
-        Console.Write("> ");
         string path = Console.ReadLine();
 
         //Exemplo de arquivo para facilitar os testes: E:\davim\GitHub\DKSCompiler\CompilerDK\wirth.dks
 
-        if(string.IsNullOrEmpty(path))
+        if (string.IsNullOrEmpty(path))
             Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
         else if (!Path.GetExtension(path).Equals(".dks"))
             Console.WriteLine(" \nERRO: Invalid file format, please select a .dks extension file\n");
@@ -28,16 +31,8 @@ class Program
         {
             try
             {
-                string[] lines = File.ReadAllLines(path, Encoding.UTF8);
-                foreach (string line in lines)
-                {
-                    Console.WriteLine(line);
-                    foreach (char character in line)
-                        if (character == '.')
-                        {
-
-                        }
-                }
+                lines = File.ReadAllLines(path, Encoding.UTF8);
+                return lines;
             }
             catch (FileNotFoundException)
             {
@@ -51,9 +46,52 @@ class Program
             {
                 Console.WriteLine("\nERRO: 'path' exceeds the maxium supported path length.\n");
             }
-            catch (Exception err) {
+            catch (Exception err)
+            {
                 Console.WriteLine("\nERRO: Ocorreu um erro desconhecido", err);
             }
+        }
+        return lines;
+    }
+
+    private static void CreateBruteAutomate(string[] lines, int j)
+    {
+        bool stateFound = false;
+        string numberStr = "";
+        int number = 0;
+
+        foreach (string line in lines)
+        {
+            for (int charPos = 0; charPos < line.Length; charPos++)
+            {
+                char ch = line[charPos];
+
+                if (ch == '.')
+                {
+                    stateFound = true;
+                    Console.Write(ch);
+                }
+                else if (stateFound)
+                {
+                    bool isNumber = Char.IsNumber(ch);
+                    if (isNumber)
+                    {
+                        numberStr += ch;
+                    }
+                    if (!isNumber || charPos + 1 == line.Length)
+                    {
+                        stateFound = false;
+                        number = Int16.Parse(numberStr);
+                        Console.Write(number + j + " ");
+                        numberStr = "";
+                    }
+                } else
+                {
+                    Console.Write(ch);
+                }
+            }
+
+            Console.Write('\n');
         }
     }
 }

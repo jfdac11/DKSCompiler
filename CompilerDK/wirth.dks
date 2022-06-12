@@ -138,7 +138,7 @@ statement = .0 ( .0
                 ]
                 { { { "-" } factor ("*" | "/") } { "-" } factor ("+" | "-") }
                 { { "-" } factor ("*" | "/") } { "-" } factor
-            }")" statement.
+            }")" statement
  
  
  
@@ -209,4 +209,4 @@ factor = "(" { "Identifier" [ "[" "Integer-Number" "]" ] "=" }
             { { { "-" } factor ("*" | "/") } { "-" } factor ("+" | "-") }
             { { "-" } factor ("*" | "/") } { "-" } factor
         } } ] ")" |
-        "Integer-number" | "Float-number"| "Constant-string" | "Character" | "true" | "false".
+        "Integer-number" | "Float-number"| "Constant-string" | "Character" | "true" | "false"
