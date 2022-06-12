@@ -22,7 +22,7 @@ class Program
         //Console.WriteLine(" Enter the path to te .dks format file: ");
         //string path = Console.ReadLine();
 
-        string path = @"E:\davim\GitHub\DKSCompiler\CompilerDK\wirth.dks";
+        string path = @"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\wirth.dks";
 
         if (string.IsNullOrEmpty(path))
             Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
@@ -57,9 +57,9 @@ class Program
 
     private static void CreateAutomateStates(string[] lines)
     {
-        Console.WriteLine("Enter your sum number: ");
+        Console.WriteLine("Enter your sum number: "); //.num = estado
         int sum = Int16.Parse(Console.ReadLine());
-        Console.WriteLine("Enter your wrong number: ");
+        Console.WriteLine("Enter your wrong number: "); // so soma a partir do número que eu errei
         int wrongNumber = Int16.Parse(Console.ReadLine());
 
         bool stateFound = false;
@@ -89,7 +89,7 @@ class Program
                         stateFound = false;
                         number = Int16.Parse(numberStr);
                         if (number >= wrongNumber)
-                            Console.Write(number + sum + " ");
+                            Console.Write(number + sum + " ");  
                         else
                             Console.Write(number + " ");
                         numberStr = "";
@@ -111,6 +111,12 @@ class Program
         int statesInTransition = 0;
         string numberStr = "";
         int number = 0;
+        bool foundTransition;
+        bool orCondition = false;
+        int level_parentheses = 0;
+        int level_brackets = 0;
+        int level_keys = 0;
+        string transition_txt = "";
 
         foreach (string line in lines)
         {
@@ -120,10 +126,14 @@ class Program
 
                 if (ch == '.')
                 {
-                    if (statesInTransition == 0)
+                    if (statesInTransition == 0) { 
+                        transition_txt += '(';
                         Console.Write('(');
-                    else if (statesInTransition == 1)
+                    }
+                    else if (statesInTransition == 1) { 
                         Console.Write(") -> ");
+                        transition_txt += ") -> ";
+                    }
                     stateFound = true;
                     foundTransition = true;
                 }
@@ -157,6 +167,10 @@ class Program
                 else if (ch == '{' || ch == '}' || ch == '(' || ch == ')' || ch == '[' || ch == ']')
                 {
                     Console.Write("VAZIO");
+                }
+                else if (ch == '|')
+                {
+                    orCondition = true;
                 }
                 else if (ch != 32 && ch != 34)
                 {
