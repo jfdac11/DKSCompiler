@@ -11,7 +11,8 @@ class Program
     static void Main(string[] args)
     {
         string[] lines = FileReader();
-        CreateAutomateStates(lines);
+        //CreateAutomateStates(lines);
+        CreateTransitionTable(lines);
     }
 
     private static string[] FileReader()
@@ -87,19 +88,81 @@ class Program
                     {
                         stateFound = false;
                         number = Int16.Parse(numberStr);
-                        if(number >= wrongNumber)
-                        Console.Write(number + sum + " ");
+                        if (number >= wrongNumber)
+                            Console.Write(number + sum + " ");
                         else
                             Console.Write(number + " ");
                         numberStr = "";
                     }
-                } else
+                }
+                else
                 {
                     Console.Write(ch);
                 }
             }
 
             Console.Write('\n');
+        }
+    }
+
+    private static void CreateTransitionTable(string[] lines)
+    {
+        bool stateFound = false;
+        int statesInTransition = 0;
+        string numberStr = "";
+        int number = 0;
+
+        foreach (string line in lines)
+        {
+            for (int charPos = 0; charPos < line.Length; charPos++)
+            {
+                char ch = line[charPos];
+
+                if (ch == '.')
+                {
+                    if (statesInTransition == 0)
+                        Console.Write('(');
+                    else if (statesInTransition == 1)
+                        Console.Write(") -> ");
+                    stateFound = true;
+                    foundTransition = true;
+                }
+                else if (stateFound)
+                {
+
+                    bool isNumber = Char.IsNumber(ch);
+                    if (isNumber)
+                    {
+                        numberStr += ch;
+                    }
+                    if (!isNumber || charPos + 1 == line.Length)
+                    {
+
+                        statesInTransition++;
+                        stateFound = false;
+                        number = Int16.Parse(numberStr);
+
+                        numberStr = "";
+                        if (statesInTransition == 2)
+                        {
+                            Console.Write(number + ")\n(" + number + ", ");
+                            statesInTransition = 1;
+                        }
+                        else
+                        {
+                            Console.Write(number + ",");
+                        }
+                    }
+                }
+                else if (ch == '{' || ch == '}' || ch == '(' || ch == ')' || ch == '[' || ch == ']')
+                {
+                    Console.Write("VAZIO");
+                }
+                else if (ch != 32 && ch != 34)
+                {
+                    Console.Write(ch);
+                } 
+            }
         }
     }
 }
