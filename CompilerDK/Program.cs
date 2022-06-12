@@ -11,17 +11,17 @@ class Program
     static void Main(string[] args)
     {
         string[] lines = FileReader();
-        CreateBruteAutomate(lines, 116);
+        CreateAutomateStates(lines);
     }
 
     private static string[] FileReader()
     {
         string[] lines = { "" };
 
-        Console.WriteLine(" Enter the path to te .dks format file: ");
-        string path = Console.ReadLine();
+        //Console.WriteLine(" Enter the path to te .dks format file: ");
+        //string path = Console.ReadLine();
 
-        //Exemplo de arquivo para facilitar os testes: E:\davim\GitHub\DKSCompiler\CompilerDK\wirth.dks
+        string path = @"E:\davim\GitHub\DKSCompiler\CompilerDK\wirth.dks";
 
         if (string.IsNullOrEmpty(path))
             Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
@@ -54,8 +54,13 @@ class Program
         return lines;
     }
 
-    private static void CreateBruteAutomate(string[] lines, int j)
+    private static void CreateAutomateStates(string[] lines)
     {
+        Console.WriteLine("Enter your sum number: ");
+        int sum = Int16.Parse(Console.ReadLine());
+        Console.WriteLine("Enter your wrong number: ");
+        int wrongNumber = Int16.Parse(Console.ReadLine());
+
         bool stateFound = false;
         string numberStr = "";
         int number = 0;
@@ -82,7 +87,10 @@ class Program
                     {
                         stateFound = false;
                         number = Int16.Parse(numberStr);
-                        Console.Write(number + j + " ");
+                        if(number >= wrongNumber)
+                        Console.Write(number + sum + " ");
+                        else
+                            Console.Write(number + " ");
                         numberStr = "";
                     }
                 } else
