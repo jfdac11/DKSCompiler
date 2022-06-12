@@ -155,6 +155,7 @@ class Program
                         numberStr = "";
                         if (statesInTransition == 2)
                         {
+                            transition_txt = number + ")\n(" + number + ", ";
                             Console.Write(number + ")\n(" + number + ", ");
                             statesInTransition = 1;
                         }
@@ -166,6 +167,7 @@ class Program
                 }
                 else if (ch == '{' || ch == '}' || ch == '(' || ch == ')' || ch == '[' || ch == ']')
                 {
+                    transition_txt += "VAZIO";
                     Console.Write("VAZIO");
                 }
                 else if (ch == '|')
