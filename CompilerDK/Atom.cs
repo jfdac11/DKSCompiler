@@ -7,28 +7,6 @@ using System.Text.RegularExpressions;
 
 namespace CompilerDK
 {
-    public class SymbolTable
-    {
-        public List<Atom> Atoms { get; set; } = new List<Atom>();
-
-        public SymbolTable()
-        {
-            CreateAtoms();
-        }
-
-        private void CreateAtoms()
-        {
-            Atom Bool = new Atom("PR01", "^bool$", "^b(o(o(l)?)?)?$");
-            Atoms.Add(Bool);
-            Atom While = new Atom("PR02", "^while$", "^w(h(i(l(e)?)?)?)?$");
-            Atoms.Add(While);
-            Atom If = new Atom("PR07", "^if$", "^if?$");
-            Atoms.Add(If);
-            
-        }
-
-    }
-
     public class Atom
     {
         public string Code { get; set; }
@@ -56,5 +34,7 @@ namespace CompilerDK
         }
     }
 
+    //coloca uma função para validação parcial
+    //coloca outra função para validação final
 
 }
