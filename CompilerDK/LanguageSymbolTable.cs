@@ -8,6 +8,7 @@ namespace CompilerDK
 {
     public class LanguageSymbolTable
     {
+        public List<Atom> Atoms { get; set; } = new List<Atom>();
 
         public LanguageSymbolTable()
         {
