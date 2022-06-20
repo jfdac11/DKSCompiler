@@ -8,14 +8,20 @@ namespace CompilerDK
 {
     internal class LexicalAnalyzer
     {
-        public SymbolTable SymbolTable = new SymbolTable();
+        public LanguageSymbolTable LanguageSymbolTable { get; set; }
+        public LanguageSymbolTable CompilationSymbolTable { get; set; }
+
+        public LexicalAnalyzer(LanguageSymbolTable languageSymbolTable)
+        {
+            LanguageSymbolTable = languageSymbolTable;
+        }
 
         public Atom IdenfifyAtom(string source, int startPosition) //
         {
             char character;
             string lexeme = "";
             int position = startPosition;
-            List<Atom> passList = new List<Atom>(SymbolTable.Atoms);
+            List<Atom> passList = new List<Atom>(LanguageSymbolTable.Atoms);
 
             do
             {   //loop para formar o maior lexeme possível
@@ -27,7 +33,7 @@ namespace CompilerDK
                 // assim que o lexeme não pode mais formar um átomo ele já está em seu maior tamanho
             } while (passList.Count > 0); 
 
-            passList = new List<Atom>(SymbolTable.Atoms);
+            passList = new List<Atom>(LanguageSymbolTable.Atoms);
             // Em seguida reduzimos o lexeme até que possa ser um átomo novamente
             do
             {
@@ -45,7 +51,7 @@ namespace CompilerDK
 
         public List<Atom> PossibleAtoms(string lexeme, List<Atom> passList) // ver se passo aqui a passlist
         {
-            foreach (Atom a in SymbolTable.Atoms)
+            foreach (Atom a in LanguageSymbolTable.Atoms)
             {
                 bool canBe = a.PartialValidation(lexeme);
                 if (!canBe)
@@ -77,5 +83,9 @@ namespace CompilerDK
                 return null;
             }
         }
+
+        // Implementar truncagem
+        // Implementar filtragem de caracteres
+        // Implementar controle de linhas -> Em que linha está o caractér localizado na "startPosition"
     }
 }

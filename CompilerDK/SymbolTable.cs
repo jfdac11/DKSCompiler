@@ -6,33 +6,30 @@ using System.Threading.Tasks;
 
 namespace CompilerDK
 {
-    public class SymbolTable
+    public class Symbol
     {
-        public List<Atom> Atoms { get; set; } = new List<Atom>();
-        //public Atom Bool = new Atom("PR01", "Bool");
-        //padrões léxicos
-        //public Atom Identifier = new Atom("ID01", "");
-        //public Atom Character = new Atom("ID05", "\'[a-z]\'");
-
-
-        //public Atom character = new Atom("PR01", "[a-z]");
-        //public Atom Digito = new Atom("PR01", "[0-9]");
-
-        public SymbolTable()
-        {
-            CreateAtoms();
-        }
-
-        private void CreateAtoms()
-        {
-            Atom Bool = new Atom("PR01", "^bool$", "^b(o(o(l)?)?)?$");
-            Atoms.Add(Bool);
-            Atom While = new Atom("PR02", "^while$", "^w(h(i(l(e)?)?)?)?$");
-            Atoms.Add(While);
-            Atom If = new Atom("PR07", "^if$", "^if?$");
-            Atoms.Add(If);
-
-        }
+        public Atom Atom { get; set; }
+        public string Lexeme { get; set; }
+        public int LengthBeforeTruncation { get; set; }
+        public int LengthAfterTruncation { get; set; }
+        public string Type { get; set; }
+        public List<int> Lines { get; set; }
 
     }
+
+    public class SymbolTable
+    {
+        public int SearchSymbol(string lexeme)
+        {
+            return 0;
+        }
+    }
+
+    /*
+        A tabela de símbolos do projeto irá conter os seguintes 
+        atributos: número da entrada da tabela de símbolos, código do átomo, 
+        lexeme, quantidade de caracteres antes da truncagem, quantidade de 
+        caracteres depois da truncagem, tipo do símbolo e as cinco primeiras 
+        linhas onde o símbolo aparece.
+     */
 }
