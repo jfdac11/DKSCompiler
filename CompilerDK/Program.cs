@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System;
+﻿using System.Text;
+using CompilerDK;
+using System.Configuration;
+using System.Text.RegularExpressions;
 
 class Program
 {
@@ -12,8 +9,19 @@ class Program
     {
         string[] lines = FileReader();
         //CreateAutomateStates(lines);
-        CreateTransitionTable(lines);
+        //CreateTransitionTable(lines);
+
+        LanguageSymbolTable languageSymbolTable = new LanguageSymbolTable();
+        LexicalAnalyzer l = new LexicalAnalyzer(languageSymbolTable);
+
+
+        string text = "ifg ";
+        Atom resp = l.IdenfifyAtom(text, 0);
+        Console.WriteLine(resp.Code);
+        
+
     }
+
 
     private static string[] FileReader()
     {
@@ -125,7 +133,7 @@ class Program
                     else if (statesInTransition == 1)
                         Console.Write(") -> ");
                     stateFound = true;
-                    foundTransition = true;
+                    //foundTransition = true;
                 }
                 else if (stateFound)
                 {
