@@ -19,6 +19,8 @@ namespace CompilerDK
 
     public class SymbolTable
     {
+        public List<Symbol> Symbols { get; set; }
+
         public int SearchSymbol(string lexeme)
         {
             return 0;
