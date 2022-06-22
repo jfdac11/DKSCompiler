@@ -9,6 +9,14 @@ namespace CompilerDK
     public class LanguageSymbolTable
     {
         public List<Atom> Atoms { get; set; } = new List<Atom>();
+        //public Atom Bool = new Atom("PR01", "Bool");
+        //padrões léxicos
+        //public Atom Identifier = new Atom("ID01", "");
+        //public Atom Character = new Atom("ID05", "\'[a-z]\'");
+
+
+        //public Atom character = new Atom("PR01", "[a-z]");
+        //public Atom Digito = new Atom("PR01", "[0-9]");
 
         public LanguageSymbolTable()
         {

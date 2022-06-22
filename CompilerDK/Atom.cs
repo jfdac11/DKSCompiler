@@ -34,7 +34,4 @@ namespace CompilerDK
         }
     }
 
-    //coloca uma função para validação parcial
-    //coloca outra função para validação final
-
 }
