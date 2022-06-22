@@ -20,10 +20,11 @@ namespace CompilerDK
             Atom Bool = new Atom("PR01", "^bool$", "^b(o(o(l)?)?)?$");
             Atoms.Add(Bool);
             Atom While = new Atom("PR02", "^while$", "^w(h(i(l(e)?)?)?)?$");
-            Atoms.Add(While);
+            Atoms.Add(While); 
             Atom If = new Atom("PR07", "^if$", "^if?$");
             Atoms.Add(If);
-
+            Atom Identifier = new Atom("ID01", "^[0-9]*([a-zA-Z]|_)+[0-9]*$", "^[0-9]*([a-zA-Z]|_)+[0-9]*$");
+            Atoms.Add(Identifier);
         }
 
     }
