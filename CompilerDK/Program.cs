@@ -15,7 +15,7 @@ class Program
         LexicalAnalyzer l = new LexicalAnalyzer(languageSymbolTable);
 
 
-        string text = "6_ ";
+        string text = "sdf_ ";
         Atom resp = l.IdenfifyAtom(text, 0);
         Console.WriteLine(resp.Code);
         
