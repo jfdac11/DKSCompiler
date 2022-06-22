@@ -15,7 +15,7 @@ class Program
         LexicalAnalyzer l = new LexicalAnalyzer(languageSymbolTable);
 
 
-        string text = "ifsdf5465 ";
+        string text = "5465 ";
         Atom resp = l.IdenfifyAtom(text, 0);
         Console.WriteLine(resp.Code);
         

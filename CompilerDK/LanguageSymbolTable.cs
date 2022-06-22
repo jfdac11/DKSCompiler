@@ -28,6 +28,8 @@ namespace CompilerDK
             //Atoms.Add(Identifier);
             Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
             Atoms.Add(Function);
+            Atom IntegerNumber = new Atom("ID03", "^[0-9]+$", "^[0-9]+$");
+            Atoms.Add(IntegerNumber);
         }
 
     }
