@@ -38,6 +38,10 @@ namespace CompilerDK
             Atoms.Add(Function);
             Atom IntegerNumber = new Atom("ID03", "^[0-9]+$", "^[0-9]+$");
             Atoms.Add(IntegerNumber);
+            Atom FloatNumber = new Atom("ID06", @"^[0-9]+\.[0-9]+(e(-|\+)?[0-9]+)?$", @"^[0-9]+\.?[0-9]*(e(-|\+)?[0-9]+)?$");
+            Atoms.Add(FloatNumber);
+            Atom ConstantString = new Atom("ID02", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"$", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)*\"?$");
+            Atoms.Add(ConstantString);
         }
 
     }
