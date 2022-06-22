@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CompilerDK
@@ -9,6 +10,7 @@ namespace CompilerDK
     public class LanguageSymbolTable
     {
         public List<Atom> Atoms { get; set; } = new List<Atom>();
+        public Regex LanguageCharacterValidator = new Regex("[a-z]|[0-9]|\"|!|=|<|>|#|&|\\(|\\)|;|\\[|\\]|{|}|,|%|\\/|\\*|\\+|\\||-|\\s|\\$|\\.|_|\'");
         //public Atom Bool = new Atom("PR01", "Bool");
         //padrões léxicos
         //public Atom Identifier = new Atom("ID01", "");
