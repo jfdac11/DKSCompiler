@@ -23,7 +23,7 @@ namespace CompilerDK
             Atoms.Add(While); 
             Atom If = new Atom("PR07", "^if$", "^if?$");
             Atoms.Add(If);
-            Atom Identifier = new Atom("ID01", "^[0-9]*([a-zA-Z]|_)+[0-9]*$", "^[0-9]*([a-zA-Z]|_)+[0-9]*$");
+            Atom Identifier = new Atom("ID01", "^([0-9]*([a-zA-Z]|_)+[0-9]*)+$", "^([0-9]*([a-zA-Z]|_)*[0-9]*)+$");
             Atoms.Add(Identifier);
         }
 

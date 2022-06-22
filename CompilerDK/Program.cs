@@ -15,7 +15,7 @@ class Program
         LexicalAnalyzer l = new LexicalAnalyzer(languageSymbolTable);
 
 
-        string text = "variavel_foda_69 ";
+        string text = "6_ ";
         Atom resp = l.IdenfifyAtom(text, 0);
         Console.WriteLine(resp.Code);
         
