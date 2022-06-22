@@ -7,19 +7,35 @@ class Program
 {
     static void Main(string[] args)
     {
+        LanguageSymbolTable languageSymbolTable = new LanguageSymbolTable();
+        LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(languageSymbolTable);
+
+        List<Atom> lexicalAnalysisReport = new List<Atom>();
+
         string[] lines = FileReader();
         //CreateAutomateStates(lines);
         //CreateTransitionTable(lines);
 
-        LanguageSymbolTable languageSymbolTable = new LanguageSymbolTable();
-        LexicalAnalyzer l = new LexicalAnalyzer(languageSymbolTable);
+        for (int i = 0; i < lines.Count(); i++)
+        {
+            string line = lines[i];
+            int startPosition = 0;
+            do
+            {
+                Atom resp = lexicalAnalyzer.IdenfifyAtom(line, startPosition);
+                if(resp != null)
+                    lexicalAnalysisReport.Add(resp);
+                startPosition = lexicalAnalyzer.CurrentPosition;
+            } while (startPosition < line.Length);
+            
+        }
 
+        foreach(Atom resp in lexicalAnalysisReport) {
+            Console.WriteLine(resp.Code);
+        }
 
-        string text = "ifg ";
-        Atom resp = l.IdenfifyAtom(text, 0);
-        Console.WriteLine(resp.Code);
-        
-
+        // a partir da sequência de átomos criar uma função para definição de escopo
+        // vai identificar a sequência de átomos
     }
 
 
@@ -30,7 +46,7 @@ class Program
         //Console.WriteLine(" Enter the path to te .dks format file: ");
         //string path = Console.ReadLine();
 
-        string path = @"E:\davim\GitHub\DKSCompiler\CompilerDK\wirth.dks";
+        string path = @"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\teste.dks";
 
         if (string.IsNullOrEmpty(path))
             Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
