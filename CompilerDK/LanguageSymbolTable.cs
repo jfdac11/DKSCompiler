@@ -33,7 +33,13 @@ namespace CompilerDK
             Atoms.Add(While);
             Atom If = new Atom("PR07", "^if$", "^if?$");
             Atoms.Add(If);
-
+            // descomentar so depois de fazer a diferenciação por escopo
+            //Atom Identifier = new Atom("ID01", "^(([a-zA-Z]|_)+[0-9]*)+$", "^(([a-zA-Z]|_)+[0-9]*)+$");
+            //Atoms.Add(Identifier);
+            Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
+            Atoms.Add(Function);
+            Atom IntegerNumber = new Atom("ID03", "^[0-9]+$", "^[0-9]+$");
+            Atoms.Add(IntegerNumber);
         }
 
     }
