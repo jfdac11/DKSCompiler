@@ -38,10 +38,31 @@ namespace CompilerDK
                 lexeme = ReduceLexeme(lexeme);
 
             }
+            lexeme = Truncate(lexeme);
             //aqui eu vou colocar o átomo na tabela e retornar a posição final
             finalAtom = FinalAtom(lexeme);
             return finalAtom;
 
+        }
+
+        public string Truncate(string lexeme)
+        {
+            if(lexeme.Length > 35)
+            {
+                string truncatedLexeme = lexeme.Substring(0, 35);
+
+                CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
+                CurrentPassList = PossibleAtoms(truncatedLexeme);
+                if (CurrentPassList.Count == 0) //se não for nenhum átomo, reduzimos até virar um
+                {
+                    CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
+                    // Em seguida reduzimos o lexeme até que possa ser um átomo novamente
+                    lexeme = ReduceLexeme(truncatedLexeme);
+
+                }
+                return truncatedLexeme;
+            }
+            return lexeme;
         }
 
         public string GenerateLargestLexeme(string source)
