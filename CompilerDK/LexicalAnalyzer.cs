@@ -21,24 +21,12 @@ namespace CompilerDK
 
         public Atom IdenfifyAtom(string source, int startPosition) //
         {
-            string character;
             string lexeme = "";
             Atom finalAtom = null;
             CurrentPosition = startPosition;
             CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
 
-            do
-            {   //loop para formar o maior lexeme possível
-                character = source[CurrentPosition].ToString();
-                if (LanguageSymbolTable.LanguageCharacterValidator.IsMatch(character))
-                {
-                    lexeme += character;
-                    CurrentPassList = PossibleAtoms(lexeme);
-                }
-                CurrentPosition++;
-
-                // assim que o lexeme não pode mais formar um átomo ele já está em seu maior tamanho
-            } while (CurrentPassList.Count > 0 && CurrentPosition < source.Length);
+            lexeme = GenerateLargestLexeme(source);
 
 
             // Se o lexeme é o último do source verificamos se já forma um átomo
@@ -68,6 +56,25 @@ namespace CompilerDK
             //aqui eu vou colocar o átomo na tabela e retornar a posição final
             finalAtom = FinalAtom(lexeme);
             return finalAtom;
+        }
+
+        public string GenerateLargestLexeme(string source)
+        {
+            string character;
+            string lexeme = "";
+            do
+            {   //loop para formar o maior lexeme possível
+                character = source[CurrentPosition].ToString();
+                if (LanguageSymbolTable.LanguageCharacterValidator.IsMatch(character))
+                {
+                    lexeme += character;
+                    CurrentPassList = PossibleAtoms(lexeme);
+                }
+                CurrentPosition++;
+
+                // assim que o lexeme não pode mais formar um átomo ele já está em seu maior tamanho
+            } while (CurrentPassList.Count > 0 && CurrentPosition < source.Length);
+            return lexeme;
         }
 
         public List<Atom> PossibleAtoms(string lexeme) // ver se passo aqui a passlist
