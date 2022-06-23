@@ -42,6 +42,8 @@ namespace CompilerDK
             Atoms.Add(FloatNumber);
             Atom ConstantString = new Atom("ID02", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"$", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)*\"?$");
             Atoms.Add(ConstantString);
+            Atom Character = new Atom("ID05", "^'[a-zA-Z]'$", @"^'[a-zA-Z]?'?$");
+            Atoms.Add(Character);
         }
 
     }
