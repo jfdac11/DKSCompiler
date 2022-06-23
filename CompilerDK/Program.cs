@@ -20,12 +20,17 @@ class Program
         {
             string line = lines[i];
             int startPosition = 0;
+
             do
             {
                 Atom resp = lexicalAnalyzer.IdenfifyAtom(line, startPosition);
                 if(resp != null)
                     lexicalAnalysisReport.Add(resp);
                 startPosition = lexicalAnalyzer.CurrentPosition;
+                if (IsLineComment(line, startPosition))
+                {
+                    startPosition = line.Length;
+                }
             } while (startPosition < line.Length);
             
         }
@@ -36,6 +41,42 @@ class Program
 
         // a partir da sequência de átomos criar uma função para definição de escopo
         // vai identificar a sequência de átomos
+    }
+
+    public static bool IsLineComment(string source, int position)
+    {
+        if (position >= source.Length - 1)
+        {
+            return false;
+        }
+        string character = source[position].ToString();
+        string nextCharacter = source[position + 1].ToString();
+
+        return (character == "/" && nextCharacter == "/");
+    }
+
+    public static bool OpenBlockComment(string source, int position)
+    {
+        if (position >= source.Length - 1)
+        {
+            return false;
+        }
+        string character = source[position].ToString();
+        string nextCharacter = source[position + 1].ToString();
+
+        return (character == "/" && nextCharacter == "*");
+    }
+
+    public static bool ClosesBlockComment(string source, int position)
+    {
+        if (position >= source.Length - 1)
+        {
+            return false;
+        }
+        string character = source[position].ToString();
+        string nextCharacter = source[position + 1].ToString();
+
+        return (character == "*" && nextCharacter == "/");
     }
 
 
