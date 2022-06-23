@@ -15,7 +15,7 @@ namespace CompilerDK
         public int LengthBeforeTruncation { get; set; }
         public int LengthAfterTruncation { get; set; }
         public string Type { get; set; }
-        public List<int> Lines { get; set; }
+        public List<int> Lines { get; set; } = new List<int>();
 
     }
 
