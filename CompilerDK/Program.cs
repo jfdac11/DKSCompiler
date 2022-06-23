@@ -103,7 +103,7 @@ class Program
         //Console.WriteLine(" Enter the path to te .dks format file: ");
         //string path = Console.ReadLine();
 
-        string path = @"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\teste.dks";
+        string path = @"E:\davim\GitHub\DKSCompiler\CompilerDK\teste.dks";
 
         if (string.IsNullOrEmpty(path))
             Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
