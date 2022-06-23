@@ -9,25 +9,26 @@ namespace CompilerDK
     internal class LexicalAnalyzer
     {
         public LanguageSymbolTable LanguageSymbolTable { get; set; }
-        public LanguageSymbolTable CompilationSymbolTable { get; set; }
+        public SymbolTable SymbolTableReport { get; set; }
 
         public int CurrentPosition { get; set; }
         public List<Atom> CurrentPassList { get; set; }
 
-        public LexicalAnalyzer(LanguageSymbolTable languageSymbolTable)
+        public LexicalAnalyzer(LanguageSymbolTable languageSymbolTable, SymbolTable symbolTable)
         {
             LanguageSymbolTable = languageSymbolTable;
+            SymbolTableReport = symbolTable;
         }
 
-        public Atom IdenfifyAtom(string source, int startPosition) //
+        public Symbol IdenfifyAtom(string source, int startPosition) //
         {
             string lexeme = "";
-            Atom finalAtom = null;
             CurrentPosition = startPosition;
             CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
+            int lastIndex = -1;
+            Symbol symbol = new Symbol();
 
             lexeme = GenerateLargestLexeme(source);
-
 
             // Se o lexeme é o último do source verificamos se já forma um átomo
             CurrentPassList = PossibleAtoms(lexeme);
@@ -38,10 +39,27 @@ namespace CompilerDK
                 lexeme = ReduceLexeme(lexeme);
 
             }
+
+            symbol.LengthBeforeTruncation = lexeme.Length;
+            
             lexeme = Truncate(lexeme);
-            //aqui eu vou colocar o átomo na tabela e retornar a posição final
-            finalAtom = FinalAtom(lexeme);
-            return finalAtom;
+            symbol.LengthAfterTruncation = lexeme.Length;
+
+
+            symbol.Atom = FinalAtom(lexeme); ;
+
+            lastIndex = this.SymbolTableReport.SearchSymbolIndex(lexeme);
+
+            if (lastIndex == -1)
+            {   //aqui eu vou colocar o átomo na tabela e retornar a posição final
+                lastIndex = this.SymbolTableReport.AddSymbolToTable(symbol);
+            }
+            else
+            {
+                this.SymbolTableReport.UpdateSymbolTable(symbol);
+            }
+
+            return symbol;
 
         }
 
