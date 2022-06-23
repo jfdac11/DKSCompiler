@@ -48,6 +48,23 @@ namespace CompilerDK
                             .ToList().ForEach(s => s.Lines.Add(symbol.Lines[0]));
         }
 
+        public void ShowSymbolTableItems()
+        {
+
+            string[] header_table =
+            {
+                    "Tabela de Símbolos", "\n\n", "ENTRADA\t", "CODIGO\t", "LEXEME\t", "QUANTIDADE_ANTES\t", "QUANTIDADE_DEPOIS\t", "TIPO\t", "5_PRIMEIRAS_LINHAS\t"
+            };
+            Console.WriteLine(header_table);
+            foreach (Symbol symbol in Symbols)
+            {
+                string first_lines = symbol.Lines.Take(5).ToString();
+                string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
+
+                Console.WriteLine(item);
+            }
+        }
+
         public void GenerateSymbolTableReport(string save_path, string type)
         {
             CultureInfo br = new CultureInfo("br-BR");
@@ -79,10 +96,10 @@ namespace CompilerDK
                 sw.WriteLine(identifier_lines);
                 sw.WriteLine(header_table);
                 
-                foreach(Symbol symbol in this.Symbols)
+                foreach(Symbol symbol in Symbols)
                 {
                     string first_lines = symbol.Lines.Take(5).ToString();
-                    string item = $"{this.Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
+                    string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
                     sw.WriteLine(item);
                 }
 

@@ -38,6 +38,8 @@ class Program
 
                     if (symbolResp.Atom != null)
                     {
+                        symbolResp.Lines.Add(i + 1);
+
                         int lastIndex = symbolTable.SearchSymbolIndex(symbolResp.Lexeme);
 
                         if (lastIndex == -1)
@@ -63,10 +65,7 @@ class Program
             
         }
         Console.WriteLine("Table");
-        foreach(Symbol symbol in symbolTable.Symbols)
-        {
-            Console.WriteLine(symbol.Atom.Code);
-        }
+        symbolTable.ShowSymbolTableItems();
         foreach(Atom resp in lexicalAnalysisReport) {
             
             Console.WriteLine(resp.Code);
