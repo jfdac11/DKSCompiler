@@ -24,21 +24,21 @@ namespace CompilerDK
             string character;
             string lexeme = "";
             Atom finalAtom = null;
-            int position = startPosition;
+            CurrentPosition = startPosition;
             CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
 
             do
             {   //loop para formar o maior lexeme possível
-                character = source[position].ToString();
+                character = source[CurrentPosition].ToString();
                 if (LanguageSymbolTable.LanguageCharacterValidator.IsMatch(character))
                 {
                     lexeme += character;
                     CurrentPassList = PossibleAtoms(lexeme);
                 }
-                position++;
+                CurrentPosition++;
 
                 // assim que o lexeme não pode mais formar um átomo ele já está em seu maior tamanho
-            } while (CurrentPassList.Count > 0 && position < source.Length);
+            } while (CurrentPassList.Count > 0 && CurrentPosition < source.Length);
 
 
             // Se o lexeme é o último do source verificamos se já forma um átomo
@@ -46,7 +46,6 @@ namespace CompilerDK
             if(CurrentPassList.Count > 0)
             {
                 finalAtom = FinalAtom(lexeme);
-                CurrentPosition = position;
                 return finalAtom;
             }
 
@@ -58,17 +57,16 @@ namespace CompilerDK
                 if (lexeme.Length > 1)
                 {
                     lexeme = lexeme.Remove(lexeme.Length - 1); //vai removendo até formar alguma coisa
-                    position--;// aqui retrata a posição que estamos no arquivo
+                    CurrentPosition--;// aqui retrata a posição que estamos no arquivo
                 }
 
                 CurrentPassList = PossibleAtoms(lexeme);
 
-            } while (CurrentPassList.Count == 0 && lexeme.Length > 1 && position < source.Length) ;
+            } while (CurrentPassList.Count == 0 && lexeme.Length > 1 && CurrentPosition < source.Length) ;
             // Verificação que garante que um lexeme é um átomo específico
 
             //aqui eu vou colocar o átomo na tabela e retornar a posição final
             finalAtom = FinalAtom(lexeme);
-            CurrentPosition = position;
             return finalAtom;
         }
 
