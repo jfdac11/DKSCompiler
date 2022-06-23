@@ -12,6 +12,7 @@ namespace CompilerDK
         public string Code { get; set; }
         public string PartialPattern { get; set; }
         public string Pattern { get; set; }
+        public bool IsReservedWord { get; set; } = true;
 
         public Atom(string code, string pattern, string partialPattern)
         {

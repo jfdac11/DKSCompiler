@@ -11,14 +11,6 @@ namespace CompilerDK
     {
         public List<Atom> Atoms { get; set; } = new List<Atom>();
         public Regex LanguageCharacterValidator = new Regex("[a-z]|[0-9]|\"|!|=|<|>|#|&|\\(|\\)|;|\\[|\\]|{|}|,|%|\\/|\\*|\\+|\\||-|\\s|\\$|\\.|_|\'");
-        //public Atom Bool = new Atom("PR01", "Bool");
-        //padrões léxicos
-        //public Atom Identifier = new Atom("ID01", "");
-        //public Atom Character = new Atom("ID05", "\'[a-z]\'");
-
-
-        //public Atom character = new Atom("PR01", "[a-z]");
-        //public Atom Digito = new Atom("PR01", "[0-9]");
 
         public LanguageSymbolTable()
         {
@@ -35,16 +27,22 @@ namespace CompilerDK
             Atoms.Add(If);
           
             Atom Identifier = new Atom("ID01", "^(([a-zA-Z]|_)+[0-9]*)+$", "^(([a-zA-Z]|_)+[0-9]*)+$");
+            Identifier.IsReservedWord = false;
             Atoms.Add(Identifier);
             Atom ConstantString = new Atom("ID02", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"$", "^\"(([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"?)?$");
+            ConstantString.IsReservedWord = false;
             Atoms.Add(ConstantString);
             Atom IntegerNumber = new Atom("ID03", "^[0-9]+$", "^[0-9]+$");
+            IntegerNumber.IsReservedWord = false;
             Atoms.Add(IntegerNumber);
             Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
+            Function.IsReservedWord = false;
             Atoms.Add(Function);
             Atom Character = new Atom("ID05", "^'[a-zA-Z]'$", @"^'([a-zA-Z]'?)?$");
+            Character.IsReservedWord = false;
             Atoms.Add(Character);
             Atom FloatNumber = new Atom("ID06", @"^[0-9]+\.[0-9]+(e(-|\+)?[0-9]+)?$", @"^[0-9]+(\.([0-9]+((e((-|\+)?[0-9]*)?)?)?)?)?$");
+            FloatNumber.IsReservedWord = false;
             Atoms.Add(FloatNumber);
         }
 
