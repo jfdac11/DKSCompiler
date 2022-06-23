@@ -48,6 +48,21 @@ namespace CompilerDK
                             .ToList().ForEach(s => s.Lines.Add(symbol.Lines[0]));
         }
 
+        private string GetLines(List<int> lines)
+        {
+            string first_lines = "";
+
+            for (int l = 0; l < lines.Count(); l++)
+            {
+                if (l > 0)
+                    first_lines += ", ";
+
+                first_lines += lines[l].ToString();
+            }
+
+            return first_lines;
+        }
+
         public void ShowSymbolTableItems()
         {
 
@@ -61,14 +76,7 @@ namespace CompilerDK
             Console.WriteLine("\n");
             foreach (Symbol symbol in Symbols)
             {
-                string first_lines = "";
-                List<int> lines = symbol.Lines.Take(5).ToList();
-                for(int l = 0; l < lines.Count(); l++) { 
-                    if (l > 0)
-                        first_lines += ", ";
-
-                    first_lines += lines[l].ToString();
-                }
+                string first_lines = GetLines(symbol.Lines.Take(5).ToList());
                 
                 string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
 
