@@ -27,6 +27,13 @@ namespace CompilerDK
 
         private void CreateAtoms()
         {
+            Atom FloatNumber = new Atom("ID06", @"^[0-9]+\.[0-9]+(e(-|\+)?[0-9]+)?$", @"^[0-9]+\.?[0-9]*(e(-|\+)?[0-9]+)?$");
+            Atoms.Add(FloatNumber);
+            Atom ConstantString = new Atom("ID02", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"$", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)*\"?$");
+            Atoms.Add(ConstantString);
+            Atom Character = new Atom("ID05", "^'[a-zA-Z]'$", @"^'[a-zA-Z]?'?$");
+            Atoms.Add(Character);
+
             Atom Bool = new Atom("PR01", "^bool$", "^b(o(o(l)?)?)?$");
             Atoms.Add(Bool);
             Atom While = new Atom("PR02", "^while$", "^w(h(i(l(e)?)?)?)?$");
@@ -40,13 +47,6 @@ namespace CompilerDK
             Atoms.Add(Function);
             Atom IntegerNumber = new Atom("ID03", "^[0-9]+$", "^[0-9]+$");
             Atoms.Add(IntegerNumber);*/
-
-            Atom FloatNumber = new Atom("ID06", @"^[0-9]+\.[0-9]+(e(-|\+)?[0-9]+)?$", @"^[0-9]+\.?[0-9]*(e(-|\+)?[0-9]+)?$");
-            Atoms.Add(FloatNumber);
-            Atom ConstantString = new Atom("ID02", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"$", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)*\"?$");
-            Atoms.Add(ConstantString);
-            Atom Character = new Atom("ID05", "^'[a-zA-Z]'$", @"^'[a-zA-Z]?'?$");
-            Atoms.Add(Character);
         }
 
     }
