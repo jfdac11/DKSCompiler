@@ -39,19 +39,7 @@ namespace CompilerDK
 
             CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
             // Em seguida reduzimos o lexeme até que possa ser um átomo novamente
-            do
-            {
-                
-                if (lexeme.Length > 1)
-                {
-                    lexeme = lexeme.Remove(lexeme.Length - 1); //vai removendo até formar alguma coisa
-                    CurrentPosition--;// aqui retrata a posição que estamos no arquivo
-                }
-
-                CurrentPassList = PossibleAtoms(lexeme);
-
-            } while (CurrentPassList.Count == 0 && lexeme.Length > 1 && CurrentPosition < source.Length) ;
-            // Verificação que garante que um lexeme é um átomo específico
+            lexeme = ReduceLexeme(lexeme, source);
 
             //aqui eu vou colocar o átomo na tabela e retornar a posição final
             finalAtom = FinalAtom(lexeme);
@@ -74,6 +62,24 @@ namespace CompilerDK
 
                 // assim que o lexeme não pode mais formar um átomo ele já está em seu maior tamanho
             } while (CurrentPassList.Count > 0 && CurrentPosition < source.Length);
+            return lexeme;
+        }
+
+        public string ReduceLexeme(string lexeme, string source)
+        {
+            do
+            {
+                if (lexeme.Length > 1)
+                {
+                    lexeme = lexeme.Remove(lexeme.Length - 1); //vai removendo até formar alguma coisa
+                    CurrentPosition--;// aqui retrata a posição que estamos no arquivo
+                }
+
+                CurrentPassList = PossibleAtoms(lexeme);
+
+            } while (CurrentPassList.Count == 0 && lexeme.Length > 1 && CurrentPosition < source.Length);
+            // Verificação que garante que um lexeme é um átomo específico
+
             return lexeme;
         }
 
