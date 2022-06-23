@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CompilerDK
@@ -9,6 +10,7 @@ namespace CompilerDK
     public class LanguageSymbolTable
     {
         public List<Atom> Atoms { get; set; } = new List<Atom>();
+        public Regex LanguageCharacterValidator = new Regex("[a-z]|[0-9]|\"|!|=|<|>|#|&|\\(|\\)|;|\\[|\\]|{|}|,|%|\\/|\\*|\\+|\\||-|\\s|\\$|\\.|_|\'");
         //public Atom Bool = new Atom("PR01", "Bool");
         //padrões léxicos
         //public Atom Identifier = new Atom("ID01", "");
@@ -34,10 +36,11 @@ namespace CompilerDK
             // descomentar so depois de fazer a diferenciação por escopo
             //Atom Identifier = new Atom("ID01", "^(([a-zA-Z]|_)+[0-9]*)+$", "^(([a-zA-Z]|_)+[0-9]*)+$");
             //Atoms.Add(Identifier);
-            Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
+            /*Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
             Atoms.Add(Function);
             Atom IntegerNumber = new Atom("ID03", "^[0-9]+$", "^[0-9]+$");
-            Atoms.Add(IntegerNumber);
+            Atoms.Add(IntegerNumber);*/
+
             Atom FloatNumber = new Atom("ID06", @"^[0-9]+\.[0-9]+(e(-|\+)?[0-9]+)?$", @"^[0-9]+\.?[0-9]*(e(-|\+)?[0-9]+)?$");
             Atoms.Add(FloatNumber);
             Atom ConstantString = new Atom("ID02", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"$", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)*\"?$");
