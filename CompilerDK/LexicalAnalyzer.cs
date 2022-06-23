@@ -9,15 +9,15 @@ namespace CompilerDK
     internal class LexicalAnalyzer
     {
         public LanguageSymbolTable LanguageSymbolTable { get; set; }
-        public SymbolTable SymbolTableReport { get; set; }
+        //public SymbolTable SymbolTableReport { get; set; }
 
         public int CurrentPosition { get; set; }
         public List<Atom> CurrentPassList { get; set; }
 
-        public LexicalAnalyzer(LanguageSymbolTable languageSymbolTable, SymbolTable symbolTable)
+        public LexicalAnalyzer(LanguageSymbolTable languageSymbolTable)
         {
             LanguageSymbolTable = languageSymbolTable;
-            SymbolTableReport = symbolTable;
+            //SymbolTableReport = symbolTable;
         }
 
         public Symbol IdenfifyAtom(string source, int startPosition) //
@@ -25,7 +25,6 @@ namespace CompilerDK
             string lexeme = "";
             CurrentPosition = startPosition;
             CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
-            int lastIndex = -1;
             Symbol symbol = new Symbol();
 
             lexeme = GenerateLargestLexeme(source);
@@ -44,20 +43,9 @@ namespace CompilerDK
             
             lexeme = Truncate(lexeme);
             symbol.LengthAfterTruncation = lexeme.Length;
-
+            symbol.Lexeme = lexeme;
 
             symbol.Atom = FinalAtom(lexeme); ;
-
-            lastIndex = this.SymbolTableReport.SearchSymbolIndex(lexeme);
-
-            if (lastIndex == -1)
-            {   //aqui eu vou colocar o átomo na tabela e retornar a posição final
-                lastIndex = this.SymbolTableReport.AddSymbolToTable(symbol);
-            }
-            else
-            {
-                this.SymbolTableReport.UpdateSymbolTable(symbol);
-            }
 
             return symbol;
 
