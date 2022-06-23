@@ -33,14 +33,44 @@ namespace CompilerDK
             return -1;
         }
 
-        public void GenerateSymbolTableReport(string save_path)
+        public void GenerateSymbolTableReport(string save_path, string type)
         {
-
-            using (var writer = new StreamWriter($"{save_path}.csv"))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            CultureInfo br = new CultureInfo("br-BR");
+            if (type.ToLower().Equals("csv"))
             {
-                csv.WriteRecords(this.Symbols);
+                using (var writer = new StreamWriter($"{save_path}.csv"))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords(this.Symbols);
+                }
             }
+            else
+            {
+                StreamWriter sw = new StreamWriter(Path.Combine(save_path, "symbol_table_report.txt"), true, Encoding.ASCII);
+
+                DateTime date = DateTime.Now;
+
+                string[] identifier_lines =
+                {
+                    "Relatório da Tabela de Símbolos", date.ToString("u", br), "\n\n"
+                };
+
+                string[] header_table =
+                {
+                    "ENTRADA\t", "CODIGO\t", "LEXEME\t", "QUANTIDADE_ANTES\t", "QUANTIDADE_DEPOIS\t", "TIPO\t", "5_PRIMEIRAS_LINHAS\t"
+                };
+                sw.WriteLine(identifier_lines);
+                sw.WriteLine(header_table);
+                
+                foreach(Symbol symbol in this.Symbols)
+                {
+                    string first_lines = symbol.Lines.Take(5).ToString();
+                    string item = $"{this.Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
+                    sw.WriteLine(item);
+                }
+
+                //await File.WriteAllLinesAsync($"{save_path}/symbol_table_report.txt", lines);
+            }   
         }
     }
 
