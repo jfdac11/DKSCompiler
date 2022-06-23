@@ -31,19 +31,17 @@ namespace CompilerDK
 
             // Se o lexeme é o último do source verificamos se já forma um átomo
             CurrentPassList = PossibleAtoms(lexeme);
-            if(CurrentPassList.Count > 0)
+            if(CurrentPassList.Count == 0) //se não for nenhum átomo, reduzimos até virar um
             {
-                finalAtom = FinalAtom(lexeme);
-                return finalAtom;
+                CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
+                // Em seguida reduzimos o lexeme até que possa ser um átomo novamente
+                lexeme = ReduceLexeme(lexeme, source);
+
             }
-
-            CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
-            // Em seguida reduzimos o lexeme até que possa ser um átomo novamente
-            lexeme = ReduceLexeme(lexeme, source);
-
             //aqui eu vou colocar o átomo na tabela e retornar a posição final
             finalAtom = FinalAtom(lexeme);
             return finalAtom;
+
         }
 
         public string GenerateLargestLexeme(string source)
