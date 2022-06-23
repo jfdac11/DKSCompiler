@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CsvHelper;
 
 namespace CompilerDK
 {
@@ -21,7 +23,7 @@ namespace CompilerDK
     {
         public List<Symbol> Symbols { get; set; }
 
-        public int SearchSymbol(string lexeme)
+        public int SearchSymbolIndex(string lexeme)
         {
 
             // returna 
@@ -29,6 +31,16 @@ namespace CompilerDK
                 return Symbols.FindIndex(lex => lex.Lexeme == lexeme);
             
             return -1;
+        }
+
+        public void GenerateSymbolTableReport(string save_path)
+        {
+
+            using (var writer = new StreamWriter($"{save_path}.csv"))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecords(this.Symbols);
+            }
         }
     }
 
