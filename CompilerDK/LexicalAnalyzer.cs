@@ -58,7 +58,7 @@ namespace CompilerDK
                     CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
                     // Em seguida reduzimos o lexeme até que possa ser um átomo novamente
                     lexeme = ReduceLexeme(truncatedLexeme);
-
+                    //adicionar o fecha aspas da string
                 }
                 return truncatedLexeme;
             }
@@ -69,6 +69,11 @@ namespace CompilerDK
         {
             string character;
             string lexeme = "";
+            if (source.Length == 0)
+            {
+                return "";
+            }
+
             do
             {   //loop para formar o maior lexeme possível
                 character = source[CurrentPosition].ToString();
@@ -135,6 +140,11 @@ namespace CompilerDK
             if(finalList.Count == 1)
             {
                 return finalList[0];
+            }
+            else if (finalList.Count > 1)
+            {
+                Atom finalAtom = finalList.Where(atom => atom.IsReservedWord == true).Last();
+                return  finalAtom != null ? finalAtom : null;
             }
             else
             {
