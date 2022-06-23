@@ -42,7 +42,7 @@ namespace CompilerDK
             Atoms.Add(IntegerNumber);
             Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
             Atoms.Add(Function);
-            Atom Character = new Atom("ID05", "^'[a-zA-Z]'$", @"^'[a-zA-Z]?'?$");
+            Atom Character = new Atom("ID05", "^'[a-zA-Z]'$", @"^'([a-zA-Z]'?)?$");
             Atoms.Add(Character);
             Atom FloatNumber = new Atom("ID06", @"^[0-9]+\.[0-9]+(e(-|\+)?[0-9]+)?$", @"^[0-9]+(\.([0-9]+((e((-|\+)?[0-9]*)?)?)?)?)?$");
             Atoms.Add(FloatNumber);
