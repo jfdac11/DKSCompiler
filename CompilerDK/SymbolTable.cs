@@ -23,6 +23,13 @@ namespace CompilerDK
     {
         public List<Symbol> Symbols { get; set; }
 
+        public int AddSymbolToTable(Symbol symbol)
+        {
+            this.Symbols.Add(symbol);
+
+            return this.Symbols.Count() - 1;
+        }
+
         public int SearchSymbolIndex(string lexeme)
         {
 
@@ -46,6 +53,7 @@ namespace CompilerDK
             }
             else
             {
+                // por enquanto gravar no formato .txt para depois gravar em .TAB
                 StreamWriter sw = new StreamWriter(Path.Combine(save_path, "symbol_table_report.txt"), true, Encoding.ASCII);
 
                 DateTime date = DateTime.Now;
@@ -59,6 +67,7 @@ namespace CompilerDK
                 {
                     "ENTRADA\t", "CODIGO\t", "LEXEME\t", "QUANTIDADE_ANTES\t", "QUANTIDADE_DEPOIS\t", "TIPO\t", "5_PRIMEIRAS_LINHAS\t"
                 };
+
                 sw.WriteLine(identifier_lines);
                 sw.WriteLine(header_table);
                 
