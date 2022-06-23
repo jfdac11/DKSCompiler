@@ -40,6 +40,14 @@ namespace CompilerDK
             return -1;
         }
 
+        public void UpdateSymbolTable(Symbol symbol)
+        {
+            Symbols.Where(sym => sym.Lexeme.Equals(symbol.Lexeme) &&
+                                            sym.Atom == symbol.Atom
+                                          )
+                            .ToList().ForEach(s => s.Lines.Add(symbol.Lines[0]));
+        }
+
         public void GenerateSymbolTableReport(string save_path, string type)
         {
             CultureInfo br = new CultureInfo("br-BR");
