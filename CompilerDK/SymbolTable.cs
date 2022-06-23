@@ -61,7 +61,15 @@ namespace CompilerDK
             Console.WriteLine("\n");
             foreach (Symbol symbol in Symbols)
             {
-                string first_lines = symbol.Lines.Take(5).ToString();
+                string first_lines = "";
+                List<int> lines = symbol.Lines.Take(5).ToList();
+                for(int l = 0; l < lines.Count(); l++) { 
+                    if (l > 0)
+                        first_lines += ", ";
+
+                    first_lines += lines[l].ToString();
+                }
+                
                 string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
 
                 Console.WriteLine(item);
