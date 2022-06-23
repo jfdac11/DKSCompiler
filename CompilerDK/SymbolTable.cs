@@ -23,7 +23,12 @@ namespace CompilerDK
 
         public int SearchSymbol(string lexeme)
         {
-            return 0;
+
+            // returna 
+            if (Symbols.Any(lex => lex.Lexeme == lexeme))
+                return Symbols.FindIndex(lex => lex.Lexeme == lexeme);
+            
+            return -1;
         }
     }
 
