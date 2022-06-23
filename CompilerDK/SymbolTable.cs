@@ -63,14 +63,20 @@ namespace CompilerDK
             return first_lines;
         }
 
-        public void ShowSymbolTableItems()
+        private string[] GetHeaderTable()
         {
-
             string[] header_table =
             {
                     "Tabela de Símbolos", "\n\n", "ENTRADA\t", "CODIGO\t", "LEXEME\t", "QUANTIDADE_ANTES\t", "QUANTIDADE_DEPOIS\t", "TIPO\t", "5_PRIMEIRAS_LINHAS\t"
             };
-            foreach (string header in header_table)
+
+            return header_table;
+        }
+
+        public void ShowSymbolTableItems()
+        {
+                        
+            foreach (string header in GetHeaderTable())
                 Console.Write(header);
 
             Console.WriteLine("\n");
