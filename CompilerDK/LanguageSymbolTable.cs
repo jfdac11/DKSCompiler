@@ -36,7 +36,7 @@ namespace CompilerDK
 
             Atom Identifier = new Atom("ID01", "^(([a-zA-Z]|_)+[0-9]*)+$", "^(([a-zA-Z]|_)+[0-9]*)+$");
             Atoms.Add(Identifier);
-            Atom ConstantString = new Atom("ID02", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"$", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)*\"?$");
+            Atom ConstantString = new Atom("ID02", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"$", "^\"(([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"?)?$");
             Atoms.Add(ConstantString);
             Atom IntegerNumber = new Atom("ID03", "^[0-9]+$", "^[0-9]+$");
             Atoms.Add(IntegerNumber);
