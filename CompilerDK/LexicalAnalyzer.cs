@@ -45,7 +45,7 @@ namespace CompilerDK
             if(passList.Count > 0)
             {
                 finalAtom = FinalAtom(lexeme, passList);
-                CurrentPosition = position-1;
+                CurrentPosition = position;
                 return finalAtom;
             }
 
