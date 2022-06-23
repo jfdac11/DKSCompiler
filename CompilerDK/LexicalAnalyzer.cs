@@ -73,15 +73,16 @@ namespace CompilerDK
 
         public List<Atom> PossibleAtoms(string lexeme, List<Atom> passList) // ver se passo aqui a passlist
         {
+            List<Atom> possibleAtoms = new List<Atom>(passList);
             foreach (Atom a in LanguageSymbolTable.Atoms)
             {
                 bool canBe = a.PartialValidation(lexeme);
                 if (!canBe)
                 {
-                    passList.Remove(a); // remove o atual da lista
+                    possibleAtoms.Remove(a); // remove o atual da lista
                 };
             };
-            return passList;
+            return possibleAtoms;
         }
 
         public Atom FinalAtom(string lexeme, List<Atom> passList)
