@@ -12,6 +12,7 @@ namespace CompilerDK
         public LanguageSymbolTable CompilationSymbolTable { get; set; }
 
         public int CurrentPosition { get; set; }
+        public List<Atom> CurrentPassList { get; set; }
 
         public LexicalAnalyzer(LanguageSymbolTable languageSymbolTable)
         {
@@ -20,74 +21,105 @@ namespace CompilerDK
 
         public Atom IdenfifyAtom(string source, int startPosition) //
         {
-            string character;
             string lexeme = "";
             Atom finalAtom = null;
-            int position = startPosition;
-            List<Atom> passList = new List<Atom>(LanguageSymbolTable.Atoms);
+            CurrentPosition = startPosition;
+            CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
 
-            do
-            {   //loop para formar o maior lexeme possível
-                character = source[position].ToString();
-                if (LanguageSymbolTable.LanguageCharacterValidator.IsMatch(character))
-                {
-                    lexeme += character;
-                    passList = PossibleAtoms(lexeme, passList);
-                }
-                position++;
-
-                // assim que o lexeme não pode mais formar um átomo ele já está em seu maior tamanho
-            } while (passList.Count > 0 && position < source.Length);
+            lexeme = GenerateLargestLexeme(source);
 
 
             // Se o lexeme é o último do source verificamos se já forma um átomo
-            passList = PossibleAtoms(lexeme, passList);
-            if(passList.Count > 0)
+            CurrentPassList = PossibleAtoms(lexeme);
+            if(CurrentPassList.Count == 0) //se não for nenhum átomo, reduzimos até virar um
             {
-                finalAtom = FinalAtom(lexeme, passList);
-                CurrentPosition = position-1;
-                return finalAtom;
-            }
+                CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
+                // Em seguida reduzimos o lexeme até que possa ser um átomo novamente
+                lexeme = ReduceLexeme(lexeme);
 
-            passList = new List<Atom>(LanguageSymbolTable.Atoms);
-            // Em seguida reduzimos o lexeme até que possa ser um átomo novamente
+            }
+            lexeme = Truncate(lexeme);
+            //aqui eu vou colocar o átomo na tabela e retornar a posição final
+            finalAtom = FinalAtom(lexeme);
+            return finalAtom;
+
+        }
+
+        public string Truncate(string lexeme)
+        {
+            if(lexeme.Length > 35)
+            {
+                string truncatedLexeme = lexeme.Substring(0, 35);
+
+                CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
+                CurrentPassList = PossibleAtoms(truncatedLexeme);
+                if (CurrentPassList.Count == 0) //se não for nenhum átomo, reduzimos até virar um
+                {
+                    CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
+                    // Em seguida reduzimos o lexeme até que possa ser um átomo novamente
+                    lexeme = ReduceLexeme(truncatedLexeme);
+
+                }
+                return truncatedLexeme;
+            }
+            return lexeme;
+        }
+
+        public string GenerateLargestLexeme(string source)
+        {
+            string character;
+            string lexeme = "";
+            do
+            {   //loop para formar o maior lexeme possível
+                character = source[CurrentPosition].ToString();
+                if (LanguageSymbolTable.LanguageCharacterValidator.IsMatch(character))
+                {
+                    lexeme += character;
+                    CurrentPassList = PossibleAtoms(lexeme);
+                }
+                CurrentPosition++;
+
+                // assim que o lexeme não pode mais formar um átomo ele já está em seu maior tamanho
+            } while (CurrentPassList.Count > 0 && CurrentPosition < source.Length);
+            return lexeme;
+        }
+
+        public string ReduceLexeme(string lexeme)
+        {
             do
             {
-                
                 if (lexeme.Length > 1)
                 {
                     lexeme = lexeme.Remove(lexeme.Length - 1); //vai removendo até formar alguma coisa
-                    position--;// aqui retrata a posição que estamos no arquivo
+                    CurrentPosition--;// aqui retrata a posição que estamos no arquivo
                 }
-                    
-                passList = PossibleAtoms(lexeme, passList);
 
-            } while (passList.Count == 0 && lexeme.Length > 1 && position < source.Length) ;
+                CurrentPassList = PossibleAtoms(lexeme);
+
+            } while (CurrentPassList.Count == 0 && lexeme.Length > 1);
             // Verificação que garante que um lexeme é um átomo específico
 
-            //aqui eu vou colocar o átomo na tabela e retornar a posição final
-            finalAtom = FinalAtom(lexeme, passList);
-            CurrentPosition = position;
-            return finalAtom;
+            return lexeme;
         }
 
-        public List<Atom> PossibleAtoms(string lexeme, List<Atom> passList) // ver se passo aqui a passlist
+        public List<Atom> PossibleAtoms(string lexeme) // ver se passo aqui a passlist
         {
-            foreach (Atom a in LanguageSymbolTable.Atoms)
+            List<Atom> possibleAtoms = new List<Atom>(CurrentPassList);
+            foreach (Atom a in CurrentPassList)
             {
                 bool canBe = a.PartialValidation(lexeme);
                 if (!canBe)
                 {
-                    passList.Remove(a); // remove o atual da lista
+                    possibleAtoms.Remove(a); // remove o atual da lista
                 };
             };
-            return passList;
+            return possibleAtoms;
         }
 
-        public Atom FinalAtom(string lexeme, List<Atom> passList)
+        public Atom FinalAtom(string lexeme)
         {
-            List<Atom> finalList = new List<Atom>(passList);
-            foreach (Atom a in passList)
+            List<Atom> finalList = new List<Atom>(CurrentPassList);
+            foreach (Atom a in CurrentPassList)
             {
                 bool canBe = a.FinalValidation(lexeme);
                 if (!canBe)

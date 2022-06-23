@@ -33,7 +33,7 @@ namespace CompilerDK
             Atoms.Add(While);
             Atom If = new Atom("PR07", "^if$", "^if?$");
             Atoms.Add(If);
-
+          
             Atom Identifier = new Atom("ID01", "^(([a-zA-Z]|_)+[0-9]*)+$", "^(([a-zA-Z]|_)+[0-9]*)+$");
             Atoms.Add(Identifier);
             Atom ConstantString = new Atom("ID02", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"$", "^\"(([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"?)?$");
