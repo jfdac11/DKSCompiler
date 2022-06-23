@@ -55,7 +55,10 @@ namespace CompilerDK
             {
                     "Tabela de Símbolos", "\n\n", "ENTRADA\t", "CODIGO\t", "LEXEME\t", "QUANTIDADE_ANTES\t", "QUANTIDADE_DEPOIS\t", "TIPO\t", "5_PRIMEIRAS_LINHAS\t"
             };
-            Console.WriteLine(header_table);
+            foreach (string header in header_table)
+                Console.Write(header);
+
+            Console.WriteLine("\n");
             foreach (Symbol symbol in Symbols)
             {
                 string first_lines = symbol.Lines.Take(5).ToString();
