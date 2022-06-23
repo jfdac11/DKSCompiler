@@ -12,6 +12,7 @@ namespace CompilerDK
         public LanguageSymbolTable CompilationSymbolTable { get; set; }
 
         public int CurrentPosition { get; set; }
+        public List<Atom> CurrentPassList { get; set; }
 
         public LexicalAnalyzer(LanguageSymbolTable languageSymbolTable)
         {
@@ -24,7 +25,7 @@ namespace CompilerDK
             string lexeme = "";
             Atom finalAtom = null;
             int position = startPosition;
-            List<Atom> passList = new List<Atom>(LanguageSymbolTable.Atoms);
+            CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
 
             do
             {   //loop para formar o maior lexeme possível
@@ -32,24 +33,24 @@ namespace CompilerDK
                 if (LanguageSymbolTable.LanguageCharacterValidator.IsMatch(character))
                 {
                     lexeme += character;
-                    passList = PossibleAtoms(lexeme, passList);
+                    CurrentPassList = PossibleAtoms(lexeme);
                 }
                 position++;
 
                 // assim que o lexeme não pode mais formar um átomo ele já está em seu maior tamanho
-            } while (passList.Count > 0 && position < source.Length);
+            } while (CurrentPassList.Count > 0 && position < source.Length);
 
 
             // Se o lexeme é o último do source verificamos se já forma um átomo
-            passList = PossibleAtoms(lexeme, passList);
-            if(passList.Count > 0)
+            CurrentPassList = PossibleAtoms(lexeme);
+            if(CurrentPassList.Count > 0)
             {
-                finalAtom = FinalAtom(lexeme, passList);
+                finalAtom = FinalAtom(lexeme);
                 CurrentPosition = position;
                 return finalAtom;
             }
 
-            passList = new List<Atom>(LanguageSymbolTable.Atoms);
+            CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
             // Em seguida reduzimos o lexeme até que possa ser um átomo novamente
             do
             {
@@ -59,22 +60,22 @@ namespace CompilerDK
                     lexeme = lexeme.Remove(lexeme.Length - 1); //vai removendo até formar alguma coisa
                     position--;// aqui retrata a posição que estamos no arquivo
                 }
-                    
-                passList = PossibleAtoms(lexeme, passList);
 
-            } while (passList.Count == 0 && lexeme.Length > 1 && position < source.Length) ;
+                CurrentPassList = PossibleAtoms(lexeme);
+
+            } while (CurrentPassList.Count == 0 && lexeme.Length > 1 && position < source.Length) ;
             // Verificação que garante que um lexeme é um átomo específico
 
             //aqui eu vou colocar o átomo na tabela e retornar a posição final
-            finalAtom = FinalAtom(lexeme, passList);
+            finalAtom = FinalAtom(lexeme);
             CurrentPosition = position;
             return finalAtom;
         }
 
-        public List<Atom> PossibleAtoms(string lexeme, List<Atom> passList) // ver se passo aqui a passlist
+        public List<Atom> PossibleAtoms(string lexeme) // ver se passo aqui a passlist
         {
-            List<Atom> possibleAtoms = new List<Atom>(passList);
-            foreach (Atom a in LanguageSymbolTable.Atoms)
+            List<Atom> possibleAtoms = new List<Atom>(CurrentPassList);
+            foreach (Atom a in CurrentPassList)
             {
                 bool canBe = a.PartialValidation(lexeme);
                 if (!canBe)
@@ -85,10 +86,10 @@ namespace CompilerDK
             return possibleAtoms;
         }
 
-        public Atom FinalAtom(string lexeme, List<Atom> passList)
+        public Atom FinalAtom(string lexeme)
         {
-            List<Atom> finalList = new List<Atom>(passList);
-            foreach (Atom a in passList)
+            List<Atom> finalList = new List<Atom>(CurrentPassList);
+            foreach (Atom a in CurrentPassList)
             {
                 bool canBe = a.FinalValidation(lexeme);
                 if (!canBe)
