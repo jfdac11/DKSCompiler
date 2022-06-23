@@ -112,18 +112,15 @@ namespace CompilerDK
                 {
                     "Relatório da Tabela de Símbolos", date.ToString("u", br), "\n\n"
                 };
-
-                string[] header_table =
-                {
-                    "ENTRADA\t", "CODIGO\t", "LEXEME\t", "QUANTIDADE_ANTES\t", "QUANTIDADE_DEPOIS\t", "TIPO\t", "5_PRIMEIRAS_LINHAS\t"
-                };
+                                
 
                 sw.WriteLine(identifier_lines);
-                sw.WriteLine(header_table);
+                sw.WriteLine(GetHeaderTable());
                 
                 foreach(Symbol symbol in Symbols)
                 {
-                    string first_lines = symbol.Lines.Take(5).ToString();
+                    string first_lines = GetLines(symbol.Lines.Take(5).ToList());
+
                     string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
                     sw.WriteLine(item);
                 }

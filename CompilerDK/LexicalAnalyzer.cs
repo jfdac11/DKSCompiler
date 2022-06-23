@@ -9,7 +9,6 @@ namespace CompilerDK
     internal class LexicalAnalyzer
     {
         public LanguageSymbolTable LanguageSymbolTable { get; set; }
-        //public SymbolTable SymbolTableReport { get; set; }
 
         public int CurrentPosition { get; set; }
         public List<Atom> CurrentPassList { get; set; }
@@ -17,7 +16,6 @@ namespace CompilerDK
         public LexicalAnalyzer(LanguageSymbolTable languageSymbolTable)
         {
             LanguageSymbolTable = languageSymbolTable;
-            //SymbolTableReport = symbolTable;
         }
 
         public Symbol IdenfifyAtom(string source, int startPosition) //
