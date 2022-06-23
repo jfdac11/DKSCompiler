@@ -13,6 +13,7 @@ class Program
         List<Atom> lexicalAnalysisReport = new List<Atom>();
 
         string[] lines = FileReader();
+        bool isBlockComment = false;
         //CreateAutomateStates(lines);
         //CreateTransitionTable(lines);
 
@@ -20,17 +21,32 @@ class Program
         {
             string line = lines[i];
             int startPosition = 0;
-
+            
             do
             {
-                Atom resp = lexicalAnalyzer.IdenfifyAtom(line, startPosition);
-                if(resp != null)
-                    lexicalAnalysisReport.Add(resp);
-                startPosition = lexicalAnalyzer.CurrentPosition;
-                if (IsLineComment(line, startPosition))
+                if (OpenBlockComment(line, startPosition)) {
+                    isBlockComment = true;
+                }else if (ClosesBlockComment(line, startPosition))
                 {
-                    startPosition = line.Length;
+                    isBlockComment = false;
                 }
+
+                if (!isBlockComment)
+                {
+                    Atom resp = lexicalAnalyzer.IdenfifyAtom(line, startPosition);
+                    if (resp != null)
+                        lexicalAnalysisReport.Add(resp);
+                    startPosition = lexicalAnalyzer.CurrentPosition;
+                    if (IsLineComment(line, startPosition))
+                    {
+                        startPosition = line.Length;
+                    }
+                }
+                else
+                {
+                    startPosition++;
+                }
+                
             } while (startPosition < line.Length);
             
         }
