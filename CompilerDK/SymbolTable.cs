@@ -21,7 +21,8 @@ namespace CompilerDK
 
     public class SymbolTable
     {
-        public List<Symbol> Symbols { get; set; }
+        public List<Symbol> Symbols { get; set; } = new List<Symbol>();
+
 
         public int AddSymbolToTable(Symbol symbol)
         {
@@ -33,7 +34,6 @@ namespace CompilerDK
         public int SearchSymbolIndex(string lexeme)
         {
 
-            // returna 
             if (Symbols.Any(lex => lex.Lexeme == lexeme))
                 return Symbols.FindIndex(lex => lex.Lexeme == lexeme);
             
