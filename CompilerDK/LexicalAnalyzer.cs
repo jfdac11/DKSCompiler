@@ -20,7 +20,7 @@ namespace CompilerDK
 
         public Atom IdenfifyAtom(string source, int startPosition) //
         {
-            char character;
+            string character;
             string lexeme = "";
             Atom finalAtom = null;
             int position = startPosition;
@@ -28,14 +28,19 @@ namespace CompilerDK
 
             do
             {   //loop para formar o maior lexeme possível
-                character = source[position];
-                lexeme += character;
-                passList = PossibleAtoms(lexeme, passList);
+                character = source[position].ToString();
+                if (LanguageSymbolTable.LanguageCharacterValidator.IsMatch(character))
+                {
+                    lexeme += character;
+                    passList = PossibleAtoms(lexeme, passList);
+                }
                 position++;
 
                 // assim que o lexeme não pode mais formar um átomo ele já está em seu maior tamanho
             } while (passList.Count > 0 && position < source.Length);
 
+
+            // Se o lexeme é o último do source verificamos se já forma um átomo
             passList = PossibleAtoms(lexeme, passList);
             if(passList.Count > 0)
             {
@@ -106,7 +111,7 @@ namespace CompilerDK
         }
 
         // Implementar truncagem
-        // Implementar filtragem de caracteres
+        // Implementar filtragem de caracteres (ok)
         // Implementar controle de linhas -> Em que linha está o caractér localizado na "startPosition"
     }
 }
