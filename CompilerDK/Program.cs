@@ -38,15 +38,16 @@ class Program
 
                     if (symbolResp.Atom != null)
                     {
-                        symbolResp.Lines.Add(i + 1);
+                        symbolResp.Type = languageSymbolTable.GetType(symbolResp.Atom.Code);
 
+                        symbolResp.Lines.Add(i + 1);
+                        
                         int lastIndex = symbolTable.SearchSymbolIndex(symbolResp.Lexeme);
 
                         if (lastIndex == -1)
                             lastIndex = symbolTable.AddSymbolToTable(symbolResp);
                         else
                             symbolTable.UpdateSymbolTable(symbolResp);
-
 
                         lexicalAnalysisReport.Add(symbolResp.Atom);
                     }

@@ -43,7 +43,7 @@ namespace CompilerDK
             symbol.LengthAfterTruncation = lexeme.Length;
             symbol.Lexeme = lexeme;
 
-            symbol.Atom = FinalAtom(lexeme); ;
+            symbol.Atom = FinalAtom(lexeme);
 
             return symbol;
 
