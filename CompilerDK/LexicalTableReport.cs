@@ -36,9 +36,19 @@ namespace CompilerDK
             "Maria Antônia Amado Lima",
             "71992112935",
             "maria.lima@aln.senaicimatec.edu.br"
-        }
+        };
+
         private string[] ColumnsName = { "LEXEME\t", "CODIGO ATOMO\t", "INDICE TABELA DE SIMBOLOS\t" };
         public List<LexicalItemTable> FoundedAtoms { get; set; } = new List<LexicalItemTable>();
+
+        private string GetHeader()
+        {
+            string header = "";
+            foreach (string h in Header)
+                header += $"{h}\n";
+
+            return header;
+        }
 
         private string GetColumnsName()
         {
