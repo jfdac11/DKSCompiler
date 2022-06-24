@@ -29,9 +29,10 @@ class Program
                 }else if (ClosesBlockComment(line, startPosition))
                 {
                     isBlockComment = false;
+                    startPosition = startPosition + 2;
                 }
 
-                if (!isBlockComment)
+                if (!isBlockComment && startPosition < line.Length)
                 {
                     bool isFunction = IsFunction();
                     Atom resp = lexicalAnalyzer.IdenfifyAtom(line, startPosition, isFunction);
