@@ -22,13 +22,28 @@ namespace CompilerDK
 
     internal class LexicalTableReport
     {
-        private string[] HeaderTable = { "LEXEME\t", "CODIGO ATOMO\t", "INDICE TABELA DE SIMBOLOS\t" };
+        private string[] Header =
+        {
+            "Davi Machado Costa",
+            "75998712714",
+            "davi.costa@aln.senaicimatec.edu.br",
+            "Fernanda Vitória Nascimento Lisboa",
+            "71981578181",
+            "fernanda.lisboa@aln.senaicimatec.edu.br",
+            "João Felipe de Araújo Caldas",
+            "71981347724",
+            "joao.caldas@aln.senaicimatec.edu.br",
+            "Maria Antônia Amado Lima",
+            "71992112935",
+            "maria.lima@aln.senaicimatec.edu.br"
+        }
+        private string[] ColumnsName = { "LEXEME\t", "CODIGO ATOMO\t", "INDICE TABELA DE SIMBOLOS\t" };
         public List<LexicalItemTable> FoundedAtoms { get; set; } = new List<LexicalItemTable>();
 
-        private string GetHeaderTable()
+        private string GetColumnsName()
         {
             string header = "";
-            foreach (string hd in HeaderTable)
+            foreach (string hd in ColumnsName)
                 header += hd;
 
             return header;
@@ -39,7 +54,7 @@ namespace CompilerDK
             // mudar depois de .txt para .LEX
             StreamWriter sw = new StreamWriter(Path.Combine(save_path, "lexical_table_report.txt"), true, Encoding.ASCII);
 
-            sw.WriteLine(GetHeaderTable());
+            sw.WriteLine(GetColumnsName());
             foreach(LexicalItemTable l in FoundedAtoms)
             {
                 sw.Write($"\n{l.Lexeme}");
@@ -51,7 +66,7 @@ namespace CompilerDK
 
         public void ShowTableReport()
         {
-            Console.WriteLine(GetHeaderTable);
+            Console.WriteLine(GetColumnsName);
             foreach(LexicalItemTable l in FoundedAtoms)
             {
                 string txt = $"{l.Lexeme}\t{l.AtomCode}\t{l.SymbolTableIndex.ToString()}";
