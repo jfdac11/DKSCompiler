@@ -22,7 +22,17 @@ namespace CompilerDK
 
     internal class LexicalTableReport
     {
+        private string[] HeaderTable = { "LEXEME\t", "CODIGO ATOMO\t", "INDICE TABELA DE SIMBOLOS\t" };
         public List<LexicalItemTable> FoundedAtoms { get; set; } = new List<LexicalItemTable>();
+
+        private string GetHeaderTable()
+        {
+            string header = "";
+            foreach (string hd in HeaderTable)
+                header += hd;
+
+            return header;
+        }
 
 
     }
