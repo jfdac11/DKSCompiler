@@ -90,43 +90,35 @@ namespace CompilerDK
             }
         }
 
-        public void GenerateSymbolTableReport(string savePath, string type)
+        public void GenerateSymbolTableReport(string fileName, string savePath)
         {
             CultureInfo br = new CultureInfo("br-BR");
-            if (type.ToLower().Equals("csv"))
-            {
-                using (var writer = new StreamWriter($"{savePath}.csv"))
-                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-                {
-                    csv.WriteRecords(this.Symbols);
-                }
-            }
-            else
-            {
-                // por enquanto gravar no formato .txt para depois gravar em .TAB
-                StreamWriter sw = new StreamWriter(Path.Combine(savePath, "symbol_table_report.txt"), true, Encoding.ASCII);
+            
+            // por enquanto gravar no formato .txt para depois gravar em .TAB
+            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}_report.txt"), true, Encoding.ASCII);
 
-                DateTime date = DateTime.Now;
+            DateTime date = DateTime.Now;
 
-                string[] identifier_lines =
-                {
-                    "Relatório da Tabela de Símbolos", date.ToString("u", br), "\n\n"
-                };
+            string[] identifier_lines =
+            {
+                "Relatório da Tabela de Símbolos", date.ToString("u", br), "\n\n"
+            };
                                 
 
-                sw.WriteLine(identifier_lines);
-                sw.WriteLine(GetHeaderTable());
+            sw.WriteLine(identifier_lines);
+            sw.WriteLine(GetHeaderTable());
                 
-                foreach(Symbol symbol in Symbols)
-                {
-                    string first_lines = GetLines(symbol.Lines.Take(5).ToList());
+            foreach(Symbol symbol in Symbols)
+            {
+                string first_lines = GetLines(symbol.Lines.Take(5).ToList());
 
-                    string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
-                    sw.WriteLine(item);
-                }
+                string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
+                sw.WriteLine(item);
+            }
 
-                //await File.WriteAllLinesAsync($"{savePath}/symbol_table_report.txt", lines);
-            }   
+            sw.Close();
+            //await File.WriteAllLinesAsync($"{savePath}/symbol_table_report.txt", lines);
+               
         }
     }
 
