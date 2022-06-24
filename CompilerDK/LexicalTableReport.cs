@@ -34,6 +34,20 @@ namespace CompilerDK
             return header;
         }
 
+        public void GenerateLexicalTableReport(string save_path = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks")
+        {
+            // mudar depois de .txt para .LEX
+            StreamWriter sw = new StreamWriter(Path.Combine(save_path, "lexical_table_report.txt"), true, Encoding.ASCII);
+
+            sw.WriteLine(GetHeaderTable());
+            foreach(LexicalItemTable l in FoundedAtoms)
+            {
+                sw.Write(l.Lexeme);
+                sw.Write(l.AtomCode);
+                sw.Write(l.SymbolTableIndex.ToString());
+            }
+            sw.Close();
+        }
 
     }
 }
