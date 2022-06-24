@@ -11,6 +11,8 @@ namespace CompilerDK
     {
         public List<Atom> Atoms { get; set; } = new List<Atom>();
         public Regex LanguageCharacterValidator = new Regex("[a-z]|[0-9]|\"|!|=|<|>|#|&|\\(|\\)|;|\\[|\\]|{|}|,|%|\\/|\\*|\\+|\\||-|\\s|\\$|\\.|_|\'");
+        
+        private Dictionary<string, string> DefaultCodeTypes = new Dictionary<string, string>();
         //public Atom Bool = new Atom("PR01", "Bool");
         //padrões léxicos
         //public Atom Identifier = new Atom("ID01", "");
@@ -23,6 +25,7 @@ namespace CompilerDK
         public LanguageSymbolTable()
         {
             CreateAtoms();
+            AddCodeTypes();
         }
 
         private void CreateAtoms()
@@ -47,6 +50,17 @@ namespace CompilerDK
             Atom FloatNumber = new Atom("ID06", @"^[0-9]+\.[0-9]+(e(-|\+)?[0-9]+)?$", @"^[0-9]+(\.([0-9]+((e((-|\+)?[0-9]*)?)?)?)?)?$");
             Atoms.Add(FloatNumber);
         }
+
+        private void AddCodeTypes()
+        {
+            DefaultCodeTypes.Add("ID01", "VOI");
+            DefaultCodeTypes.Add("ID02", "STR");
+            DefaultCodeTypes.Add("ID03", "INT");
+            DefaultCodeTypes.Add("ID04", "VOID");
+            DefaultCodeTypes.Add("ID05", "CHC");
+            DefaultCodeTypes.Add("ID06", "PFO");
+        }
+
 
     }
 }
