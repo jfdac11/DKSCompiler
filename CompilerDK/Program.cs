@@ -8,6 +8,7 @@ class Program
     static void Main(string[] args)
     {
         LanguageSymbolTable languageSymbolTable = new LanguageSymbolTable();
+        SymbolTable symbolTable = new SymbolTable();
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(languageSymbolTable);
 
         List<Atom> lexicalAnalysisReport = new List<Atom>();
@@ -35,9 +36,23 @@ class Program
                 if (!isBlockComment && startPosition < line.Length)
                 {
                     bool isFunction = IsFunction();
-                    Atom resp = lexicalAnalyzer.IdenfifyAtom(line, startPosition, isFunction);
-                    if (resp != null)
-                        lexicalAnalysisReport.Add(resp);
+                    Symbol symbolResp = lexicalAnalyzer.IdenfifyAtom(line, startPosition, isFunction); //átomo encontrado
+
+                    if (symbolResp.Atom != null)
+                    {
+                        symbolResp.Type = languageSymbolTable.GetType(symbolResp.Atom.Code);
+
+                        symbolResp.Lines.Add(i + 1);
+                        
+                        int lastIndex = symbolTable.SearchSymbolIndex(symbolResp.Lexeme);
+
+                        if (lastIndex == -1)
+                            lastIndex = symbolTable.AddSymbolToTable(symbolResp);
+                        else
+                            symbolTable.UpdateSymbolTable(symbolResp);
+
+                        lexicalAnalysisReport.Add(symbolResp.Atom);
+                    }
                     startPosition = lexicalAnalyzer.CurrentPosition;
                     if (IsLineComment(line, startPosition))
                     {
@@ -52,8 +67,10 @@ class Program
             } while (startPosition < line.Length);
             
         }
-
+        Console.WriteLine("Table");
+        symbolTable.ShowSymbolTableItems();
         foreach(Atom resp in lexicalAnalysisReport) {
+            
             Console.WriteLine(resp.Code);
         }
 
@@ -110,7 +127,9 @@ class Program
         //Console.WriteLine(" Enter the path to te .dks format file: ");
         //string path = Console.ReadLine();
 
-        string path = @"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\teste.dks";
+        string path = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks";
+            //@"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\teste.dks";
+        // @"E:\davim\GitHub\DKSCompiler\CompilerDK\teste.dks";
 
         if (string.IsNullOrEmpty(path))
             Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");

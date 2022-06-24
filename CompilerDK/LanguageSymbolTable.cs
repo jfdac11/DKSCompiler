@@ -11,10 +11,12 @@ namespace CompilerDK
     {
         public List<Atom> Atoms { get; set; } = new List<Atom>();
         public Regex LanguageCharacterValidator = new Regex("[a-z]|[0-9]|\"|!|=|<|>|#|&|\\(|\\)|;|\\[|\\]|{|}|,|%|\\/|\\*|\\+|\\||-|\\s|\\$|\\.|_|\'");
-
+        private Dictionary<string, string> DefaultCodeTypes = new Dictionary<string, string>();
+      
         public LanguageSymbolTable()
         {
             CreateAtoms();
+            AddCodeTypes();
         }
 
         private void CreateAtoms()
@@ -121,6 +123,28 @@ namespace CompilerDK
             Atom FloatNumber = new Atom("ID06", @"^[0-9]+\.[0-9]+(e(-|\+)?[0-9]+)?$", @"^[0-9]+(\.([0-9]+((e((-|\+)?[0-9]*)?)?)?)?)?$");
             FloatNumber.IsReservedWord = false;
             Atoms.Add(FloatNumber);
+        }
+
+        private void AddCodeTypes()
+        {
+            DefaultCodeTypes.Add("ID01", "VOI");
+            DefaultCodeTypes.Add("ID02", "STR");
+            DefaultCodeTypes.Add("ID03", "INT");
+            DefaultCodeTypes.Add("ID04", "VOID");
+            DefaultCodeTypes.Add("ID05", "CHC");
+            DefaultCodeTypes.Add("ID06", "PFO");
+
+            //          PFO(ponto flutuante) INT(inteiro), STR(string), CHC
+            //          (character), BOO(booleano), VOI(void), APF(array de ponto flutuante)
+            //          AIN(array de inteiro), AST(array de string), ACH(array de character), 
+            //          ABO(array de booleano
+        }
+
+        public string GetType(string code)
+        {
+            string Type = DefaultCodeTypes[code];            
+
+            return Type;
         }
 
     }

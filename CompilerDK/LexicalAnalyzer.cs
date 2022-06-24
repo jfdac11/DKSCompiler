@@ -9,7 +9,6 @@ namespace CompilerDK
     internal class LexicalAnalyzer
     {
         public LanguageSymbolTable LanguageSymbolTable { get; set; }
-        public LanguageSymbolTable CompilationSymbolTable { get; set; }
 
         public int CurrentPosition { get; set; }
         public List<Atom> CurrentPassList { get; set; }
@@ -19,15 +18,14 @@ namespace CompilerDK
             LanguageSymbolTable = languageSymbolTable;
         }
 
-        public Atom IdenfifyAtom(string source, int startPosition, bool isFunction) //
+        public Symbol IdenfifyAtom(string source, int startPosition) //
         {
             string lexeme = "";
-            Atom finalAtom = null;
             CurrentPosition = startPosition;
             CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
+            Symbol symbol = new Symbol();
 
             lexeme = GenerateLargestLexeme(source);
-
 
             // Se o lexeme é o último do source verificamos se já forma um átomo
             CurrentPassList = PossibleAtoms(lexeme);
@@ -38,10 +36,16 @@ namespace CompilerDK
                 lexeme = ReduceLexeme(lexeme);
 
             }
+
+            symbol.LengthBeforeTruncation = lexeme.Length;
+            
             lexeme = Truncate(lexeme);
-            //aqui eu vou colocar o átomo na tabela e retornar a posição final
-            finalAtom = FinalAtom(lexeme, isFunction);
-            return finalAtom;
+            symbol.LengthAfterTruncation = lexeme.Length;
+            symbol.Lexeme = lexeme;
+
+            symbol.Atom = FinalAtom(lexeme, isFunction);
+
+            return symbol;
 
         }
 
