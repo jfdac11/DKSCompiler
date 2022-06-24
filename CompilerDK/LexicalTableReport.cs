@@ -54,7 +54,7 @@ namespace CompilerDK
         {
             string header = "";
             foreach (string hd in ColumnsName)
-                header += hd;
+                header += $"{hd}\t";
 
             return header;
         }
@@ -64,6 +64,7 @@ namespace CompilerDK
             // mudar depois de .txt para .LEX
             StreamWriter sw = new StreamWriter(Path.Combine(save_path, $"{file_name}.txt"), true, Encoding.ASCII);
 
+            sw.Write(GetHeader());
             sw.WriteLine(GetColumnsName());
             foreach(LexicalItemTable l in FoundedAtoms)
             {
@@ -76,7 +77,9 @@ namespace CompilerDK
 
         public void ShowTableReport()
         {
-            Console.WriteLine(GetColumnsName);
+            Console.Write(GetHeader());
+            Console.WriteLine(GetColumnsName());
+
             foreach(LexicalItemTable l in FoundedAtoms)
             {
                 string txt = $"{l.Lexeme}\t{l.AtomCode}\t{l.SymbolTableIndex.ToString()}";
