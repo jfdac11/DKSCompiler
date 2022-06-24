@@ -90,12 +90,12 @@ namespace CompilerDK
             }
         }
 
-        public void GenerateSymbolTableReport(string save_path, string type)
+        public void GenerateSymbolTableReport(string savePath, string type)
         {
             CultureInfo br = new CultureInfo("br-BR");
             if (type.ToLower().Equals("csv"))
             {
-                using (var writer = new StreamWriter($"{save_path}.csv"))
+                using (var writer = new StreamWriter($"{savePath}.csv"))
                 using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                 {
                     csv.WriteRecords(this.Symbols);
@@ -104,7 +104,7 @@ namespace CompilerDK
             else
             {
                 // por enquanto gravar no formato .txt para depois gravar em .TAB
-                StreamWriter sw = new StreamWriter(Path.Combine(save_path, "symbol_table_report.txt"), true, Encoding.ASCII);
+                StreamWriter sw = new StreamWriter(Path.Combine(savePath, "symbol_table_report.txt"), true, Encoding.ASCII);
 
                 DateTime date = DateTime.Now;
 
@@ -125,7 +125,7 @@ namespace CompilerDK
                     sw.WriteLine(item);
                 }
 
-                //await File.WriteAllLinesAsync($"{save_path}/symbol_table_report.txt", lines);
+                //await File.WriteAllLinesAsync($"{savePath}/symbol_table_report.txt", lines);
             }   
         }
     }
