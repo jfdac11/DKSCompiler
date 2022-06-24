@@ -140,6 +140,13 @@ namespace CompilerDK
             //          ABO(array de booleano
         }
 
+        public bool HasType(string code)
+        {
+            bool KeyExistence = DefaultCodeTypes.ContainsKey(code);
+
+            return KeyExistence;   
+        }
+
         public string GetType(string code)
         {
             string Type = DefaultCodeTypes[code];            
