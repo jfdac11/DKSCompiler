@@ -75,6 +75,7 @@ class Program
             } while (startPosition < line.Length);
             
         }
+        symbolTable.GenerateSymbolTableReport(fileName, directoryPath);
         symbolTable.ShowSymbolTableItems(fileName);
         lexicalAnalysisReport.ShowTableReport(fileName);
 
