@@ -23,14 +23,14 @@ namespace CompilerDK
 
         public bool PartialValidation(string lexeme)
         {
-            Regex myRegexValidator = new Regex(this.PartialPattern);
+            Regex myRegexValidator = new Regex(this.PartialPattern, RegexOptions.IgnoreCase);
             return myRegexValidator.IsMatch(lexeme);
             
         }
 
         public bool FinalValidation(string lexeme)
         {
-            Regex myRegexValidator = new Regex(this.Pattern);
+            Regex myRegexValidator = new Regex(this.Pattern, RegexOptions.IgnoreCase);
             return myRegexValidator.IsMatch(lexeme);
         }
     }
