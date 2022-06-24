@@ -80,7 +80,7 @@ namespace CompilerDK
             DateTime date = DateTime.Now;
             CultureInfo br = new CultureInfo("br-BR");
 
-            string description = $"{date.ToString("u", br)}-{fileName}.LEX";
+            string description = $"{date.ToString("u", br)}-{fileName}.TAB";
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
 
