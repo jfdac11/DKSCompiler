@@ -59,8 +59,19 @@ namespace CompilerDK
             DefaultCodeTypes.Add("ID04", "VOID");
             DefaultCodeTypes.Add("ID05", "CHC");
             DefaultCodeTypes.Add("ID06", "PFO");
+
+            //          PFO(ponto flutuante) INT(inteiro), STR(string), CHC
+            //          (character), BOO(booleano), VOI(void), APF(array de ponto flutuante)
+            //          AIN(array de inteiro), AST(array de string), ACH(array de character), 
+            //          ABO(array de booleano
         }
 
+        public string GetType(string code)
+        {
+            string Type = DefaultCodeTypes[code];            
+
+            return Type;
+        }
 
     }
 }
