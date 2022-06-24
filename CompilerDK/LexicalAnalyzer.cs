@@ -53,8 +53,17 @@ namespace CompilerDK
         {
             if(lexeme.Length > 35)
             {
-                string truncatedLexeme = lexeme.Substring(0, 35);
-
+                string truncatedLexeme;
+                if (lexeme[0] == '\"' && lexeme[lexeme.Length -1] == '\"')
+                {
+                    truncatedLexeme = lexeme.Substring(0, 34);
+                    truncatedLexeme += '\"';
+                }
+                else
+                {
+                    truncatedLexeme = lexeme.Substring(0, 35);
+                }
+                
                 CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
                 CurrentPassList = PossibleAtoms(truncatedLexeme);
                 if (CurrentPassList.Count == 0) //se não for nenhum átomo, reduzimos até virar um
