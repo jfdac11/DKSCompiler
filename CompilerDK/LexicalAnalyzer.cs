@@ -19,7 +19,7 @@ namespace CompilerDK
             LanguageSymbolTable = languageSymbolTable;
         }
 
-        public Atom IdenfifyAtom(string source, int startPosition) //
+        public Atom IdenfifyAtom(string source, int startPosition, bool isFunction) //
         {
             string lexeme = "";
             Atom finalAtom = null;
@@ -40,7 +40,7 @@ namespace CompilerDK
             }
             lexeme = Truncate(lexeme);
             //aqui eu vou colocar o átomo na tabela e retornar a posição final
-            finalAtom = FinalAtom(lexeme);
+            finalAtom = FinalAtom(lexeme, isFunction);
             return finalAtom;
 
         }
@@ -121,21 +121,19 @@ namespace CompilerDK
             return possibleAtoms;
         }
 
-        public Atom FinalAtom(string lexeme)
+        public Atom FinalAtom(string lexeme, bool isFunction)
         {
             List<Atom> finalList = new List<Atom>(CurrentPassList);
             foreach (Atom a in CurrentPassList)
             {
                 bool canBe = a.FinalValidation(lexeme);
-                if (!canBe)
+                //se for uma função remove o identifier
+                if (!canBe || (isFunction && a.Code == "ID01") || (!isFunction && a.Code == "ID04"))
                 {
                     finalList.Remove(a);
                 };
 
             };
-
-            // aqui, de acordo com o escopo (a lista vai ter tamanho > 1)
-            // vai verificar se é um identificador ou uma função
 
             if(finalList.Count == 1)
             {
@@ -152,8 +150,5 @@ namespace CompilerDK
             }
         }
 
-        // Implementar truncagem
-        // Implementar filtragem de caracteres (ok)
-        // Implementar controle de linhas -> Em que linha está o caractér localizado na "startPosition"
     }
 }

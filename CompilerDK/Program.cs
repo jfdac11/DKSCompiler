@@ -33,7 +33,8 @@ class Program
 
                 if (!isBlockComment)
                 {
-                    Atom resp = lexicalAnalyzer.IdenfifyAtom(line, startPosition);
+                    bool isFunction = IsFunction();
+                    Atom resp = lexicalAnalyzer.IdenfifyAtom(line, startPosition, isFunction);
                     if (resp != null)
                         lexicalAnalysisReport.Add(resp);
                     startPosition = lexicalAnalyzer.CurrentPosition;
@@ -57,6 +58,11 @@ class Program
 
         // a partir da sequência de átomos criar uma função para definição de escopo
         // vai identificar a sequência de átomos
+    }
+
+    public static bool IsFunction()
+    {
+        return false;
     }
 
     public static bool IsLineComment(string source, int position)
@@ -103,7 +109,7 @@ class Program
         //Console.WriteLine(" Enter the path to te .dks format file: ");
         //string path = Console.ReadLine();
 
-        string path = @"E:\davim\GitHub\DKSCompiler\CompilerDK\teste.dks";
+        string path = @"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\teste.dks";
 
         if (string.IsNullOrEmpty(path))
             Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
