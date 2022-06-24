@@ -48,7 +48,10 @@ class Program
 
                     if (symbolResp.Atom != null)
                     {
-                        symbolResp.Type = languageSymbolTable.GetType(symbolResp.Atom.Code);
+                        if (languageSymbolTable.HasType(symbolResp.Atom.Code))
+                            symbolResp.Type = languageSymbolTable.GetType(symbolResp.Atom.Code);
+                        else
+                            symbolResp.Type = "-";
 
                         symbolResp.Lines.Add(i + 1);
                         
