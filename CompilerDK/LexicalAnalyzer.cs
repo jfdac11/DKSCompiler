@@ -18,7 +18,7 @@ namespace CompilerDK
             LanguageSymbolTable = languageSymbolTable;
         }
 
-        public Symbol IdenfifyAtom(string source, int startPosition) //
+        public Symbol IdenfifyAtom(string source, int startPosition, bool isFunction) //
         {
             string lexeme = "";
             CurrentPosition = startPosition;
