@@ -21,6 +21,10 @@ namespace CompilerDK
 
     public class SymbolTable
     {
+        private string[] HeaderTable =
+            {
+                    "Tabela de Símbolos", "\n\n", "ENTRADA\t", "CODIGO\t", "LEXEME\t", "QUANTIDADE_ANTES\t", "QUANTIDADE_DEPOIS\t", "TIPO\t", "5_PRIMEIRAS_LINHAS\t"
+            };
         public List<Symbol> Symbols { get; set; } = new List<Symbol>();
 
 
@@ -63,14 +67,13 @@ namespace CompilerDK
             return first_lines;
         }
 
-        private string[] GetHeaderTable()
+        private string GetHeaderTable()
         {
-            string[] header_table =
-            {
-                    "Tabela de Símbolos", "\n\n", "ENTRADA\t", "CODIGO\t", "LEXEME\t", "QUANTIDADE_ANTES\t", "QUANTIDADE_DEPOIS\t", "TIPO\t", "5_PRIMEIRAS_LINHAS\t"
-            };
+            string header = "";
+            foreach (string h in HeaderTable)
+                header += $"{h}\t";
 
-            return header_table;
+            return header;
         }
 
         public void ShowSymbolTableItems(string fileName)
@@ -85,8 +88,7 @@ namespace CompilerDK
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
 
 
-            foreach (string header in GetHeaderTable())
-                Console.Write(header);
+            Console.WriteLine(GetHeaderTable());
 
             Console.WriteLine("\n");
             foreach (Symbol symbol in Symbols)
