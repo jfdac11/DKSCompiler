@@ -13,7 +13,15 @@ class Program
         LexicalTableReport lexicalAnalysisReport = new LexicalTableReport();
         //List<Atom> lexicalAnalysisReport = new List<Atom>();
 
-        string[] lines = FileReader();
+        string filePath = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks";
+        //@"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\teste.dks";
+        // @"E:\davim\GitHub\DKSCompiler\CompilerDK\teste.dks";
+
+        //string filePath = GetFilePath();
+        string fileName = Path.GetFileNameWithoutExtension(filePath);
+
+        string[] lines = FileReader(filePath);
+
         bool isBlockComment = false;
         //CreateAutomateStates(lines);
         //CreateTransitionTable(lines);
@@ -112,45 +120,43 @@ class Program
         return (character == "*" && nextCharacter == "/");
     }
 
-
-    private static string[] FileReader()
+    private static string GetFilePath()
     {
-        string[] lines = { "" };
-
-        //Console.WriteLine(" Enter the path to te .dks format file: ");
-        //string path = Console.ReadLine();
-
-        string path = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks";
-            //@"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\teste.dks";
-        // @"E:\davim\GitHub\DKSCompiler\CompilerDK\teste.dks";
+        Console.WriteLine(" Enter the path to te .dks format file: ");
+        string path = Console.ReadLine();
 
         if (string.IsNullOrEmpty(path))
             Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
         else if (!Path.GetExtension(path).Equals(".dks"))
             Console.WriteLine(" \nERRO: Invalid file format, please select a .dks extension file\n");
-        else
+
+        return path;
+    }
+
+    private static string[] FileReader(string filePath)
+    {
+        string[] lines = { "" };
+
+        try
         {
-            try
-            {
-                lines = File.ReadAllLines(path, Encoding.UTF8);
-                return lines;
-            }
-            catch (FileNotFoundException)
-            {
-                Console.WriteLine("\nERRO: The file cannot be found.\n");
-            }
-            catch (DirectoryNotFoundException)
-            {
-                Console.WriteLine("\nERRO: The directory cannot be found.\n");
-            }
-            catch (PathTooLongException)
-            {
-                Console.WriteLine("\nERRO: 'path' exceeds the maxium supported path length.\n");
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine("\nERRO: Ocorreu um erro desconhecido", err);
-            }
+            lines = File.ReadAllLines(filePath, Encoding.UTF8);
+            return lines;
+        }
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("\nERRO: The file cannot be found.\n");
+        }
+        catch (DirectoryNotFoundException)
+        {
+            Console.WriteLine("\nERRO: The directory cannot be found.\n");
+        }
+        catch (PathTooLongException)
+        {
+            Console.WriteLine("\nERRO: 'path' exceeds the maxium supported path length.\n");
+        }
+        catch (Exception err)
+        {
+            Console.WriteLine("\nERRO: Ocorreu um erro desconhecido", err);
         }
         return lines;
     }
