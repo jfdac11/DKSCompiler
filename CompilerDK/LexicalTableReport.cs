@@ -60,7 +60,7 @@ namespace CompilerDK
             return header;
         }
 
-        public void GenerateLexicalTableReport(string fileName, string savePath = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks")
+        public void GenerateLexicalTableReport(string fileName, string savePath)
         {
             CultureInfo br = new CultureInfo("br-BR");
 
@@ -94,7 +94,7 @@ namespace CompilerDK
             string description = $"{date.ToString("u", br)}-{fileName}.LEX";
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
-            Console.Read();
+            Console.WriteLine();
             Console.Write(GetHeader());
             Console.WriteLine(GetColumnsName());
 
