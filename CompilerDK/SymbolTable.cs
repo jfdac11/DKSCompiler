@@ -113,8 +113,8 @@ namespace CompilerDK
             string identifier_lines = $"-{date.ToString("u", br)}-{fileName}.TAB";
 
 
-            sw.WriteLine(title);
-            sw.WriteLine(identifier_lines);
+            sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
+            sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (identifier_lines.Length / 2)) + "}", identifier_lines));
             sw.WriteLine(GetHeaderTable());
                 
             foreach(Symbol symbol in Symbols)
