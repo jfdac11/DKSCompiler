@@ -42,11 +42,21 @@ namespace CompilerDK
             sw.WriteLine(GetHeaderTable());
             foreach(LexicalItemTable l in FoundedAtoms)
             {
-                sw.Write(l.Lexeme);
-                sw.Write(l.AtomCode);
-                sw.Write(l.SymbolTableIndex.ToString());
+                sw.Write($"\n{l.Lexeme}");
+                sw.Write($"\t{l.AtomCode}");
+                sw.Write($"\t{l.SymbolTableIndex.ToString()}");
             }
             sw.Close();
+        }
+
+        public void ShowTableReport()
+        {
+            Console.WriteLine(GetHeaderTable);
+            foreach(LexicalItemTable l in FoundedAtoms)
+            {
+                string txt = $"{l.Lexeme}\t{l.AtomCode}\t{l.SymbolTableIndex.ToString()}";
+                Console.WriteLine(txt);
+            }
         }
 
     }
