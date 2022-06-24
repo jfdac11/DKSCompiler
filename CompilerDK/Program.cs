@@ -10,8 +10,8 @@ class Program
         LanguageSymbolTable languageSymbolTable = new LanguageSymbolTable();
         SymbolTable symbolTable = new SymbolTable();
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(languageSymbolTable);
-
-        List<Atom> lexicalAnalysisReport = new List<Atom>();
+        LexicalTableReport lexicalAnalysisReport = new LexicalTableReport();
+        //List<Atom> lexicalAnalysisReport = new List<Atom>();
 
         string[] lines = FileReader();
         bool isBlockComment = false;
@@ -49,7 +49,9 @@ class Program
                         else
                             symbolTable.UpdateSymbolTable(symbolResp);
 
-                        lexicalAnalysisReport.Add(symbolResp.Atom);
+                        LexicalItemTable itemTable = new LexicalItemTable(symbolResp.Lexeme, symbolResp.Atom.Code, lastIndex);
+
+                        lexicalAnalysisReport.FoundedAtoms.Add(itemTable);
                     }
                     startPosition = lexicalAnalyzer.CurrentPosition;
                     if (IsLineComment(line, startPosition))
@@ -65,15 +67,13 @@ class Program
             } while (startPosition < line.Length);
             
         }
-        Console.WriteLine("Table");
         symbolTable.ShowSymbolTableItems();
-        foreach(Atom resp in lexicalAnalysisReport) {
-            
-            Console.WriteLine(resp.Code);
-        }
+       
+
 
         // a partir da sequência de átomos criar uma função para definição de escopo
         // vai identificar a sequência de átomos
+
     }
 
     public static bool IsLineComment(string source, int position)
