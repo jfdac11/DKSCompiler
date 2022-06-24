@@ -1,56 +1,174 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System;
+﻿using System.Text;
+using CompilerDK;
+using System.Configuration;
+using System.Text.RegularExpressions;
 
 class Program
 {
     static void Main(string[] args)
     {
-        string[] lines = FileReader();
+        LanguageSymbolTable languageSymbolTable = new LanguageSymbolTable();
+        SymbolTable symbolTable = new SymbolTable();
+        LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(languageSymbolTable);
+        LexicalTableReport lexicalAnalysisReport = new LexicalTableReport();
+        //List<Atom> lexicalAnalysisReport = new List<Atom>();
+
+        string filePath = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks";
+        //@"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\teste.dks";
+        // @"E:\davim\GitHub\DKSCompiler\CompilerDK\teste.dks";
+
+        //string filePath = GetFilePath();
+        string fileName = Path.GetFileNameWithoutExtension(filePath);
+        string directoryPath = Path.GetDirectoryName(filePath);
+        string[] lines = FileReader(filePath);
+
+        bool isBlockComment = false;
         //CreateAutomateStates(lines);
-        CreateTransitionTable(lines);
+        //CreateTransitionTable(lines);
+
+        for (int i = 0; i < lines.Count(); i++)
+        {
+            string line = lines[i];
+            int startPosition = 0;
+            
+            do
+            {
+                if (OpenBlockComment(line, startPosition)) {
+                    isBlockComment = true;
+                }else if (ClosesBlockComment(line, startPosition))
+                {
+                    isBlockComment = false;
+                    startPosition = startPosition + 2;
+                }
+
+                if (!isBlockComment && startPosition < line.Length)
+                {
+                    bool isFunction = IsFunction();
+                    Symbol symbolResp = lexicalAnalyzer.IdenfifyAtom(line, startPosition, isFunction); //átomo encontrado
+
+                    if (symbolResp.Atom != null)
+                    {
+                        if (languageSymbolTable.HasType(symbolResp.Atom.Code))
+                            symbolResp.Type = languageSymbolTable.GetType(symbolResp.Atom.Code);
+                        else
+                            symbolResp.Type = "-";
+
+                        symbolResp.Lines.Add(i + 1);
+                        
+                        int lastIndex = symbolTable.SearchSymbolIndex(symbolResp.Lexeme);
+
+                        if (lastIndex == -1)
+                            lastIndex = symbolTable.AddSymbolToTable(symbolResp);
+                        else
+                            symbolTable.UpdateSymbolTable(symbolResp);
+
+                        LexicalItemTable itemTable = new LexicalItemTable(symbolResp.Lexeme, symbolResp.Atom.Code, lastIndex);
+
+                        lexicalAnalysisReport.FoundedAtoms.Add(itemTable);
+                    }
+                    startPosition = lexicalAnalyzer.CurrentPosition;
+                    if (IsLineComment(line, startPosition))
+                    {
+                        startPosition = line.Length;
+                    }
+                }
+                else
+                {
+                    startPosition++;
+                }
+                
+            } while (startPosition < line.Length);
+            
+        }
+        symbolTable.GenerateSymbolTableReport(fileName, directoryPath);
+        symbolTable.ShowSymbolTableItems(fileName);
+        lexicalAnalysisReport.GenerateLexicalTableReport(fileName, directoryPath);
+        lexicalAnalysisReport.ShowTableReport(fileName);
+
+
+        // a partir da sequência de átomos criar uma função para definição de escopo
+        // vai identificar a sequência de átomos
+
     }
 
-    private static string[] FileReader()
+    public static bool IsFunction()
     {
-        string[] lines = { "" };
+        return false;
+    }
 
-        //Console.WriteLine(" Enter the path to te .dks format file: ");
-        //string path = Console.ReadLine();
+    public static bool IsLineComment(string source, int position)
+    {
+        if (position >= source.Length - 1)
+        {
+            return false;
+        }
+        string character = source[position].ToString();
+        string nextCharacter = source[position + 1].ToString();
 
-        string path = @"E:\davim\GitHub\DKSCompiler\CompilerDK\wirth.dks";
+        return (character == "/" && nextCharacter == "/");
+    }
+
+    public static bool OpenBlockComment(string source, int position)
+    {
+        if (position >= source.Length - 1)
+        {
+            return false;
+        }
+        string character = source[position].ToString();
+        string nextCharacter = source[position + 1].ToString();
+
+        return (character == "/" && nextCharacter == "*");
+    }
+
+    public static bool ClosesBlockComment(string source, int position)
+    {
+        if (position >= source.Length - 1)
+        {
+            return false;
+        }
+        string character = source[position].ToString();
+        string nextCharacter = source[position + 1].ToString();
+
+        return (character == "*" && nextCharacter == "/");
+    }
+
+    private static string GetFilePath()
+    {
+        Console.WriteLine(" Enter the path to te .dks format file: ");
+        string path = Console.ReadLine();
 
         if (string.IsNullOrEmpty(path))
             Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
         else if (!Path.GetExtension(path).Equals(".dks"))
             Console.WriteLine(" \nERRO: Invalid file format, please select a .dks extension file\n");
-        else
+
+        return path;
+    }
+
+    private static string[] FileReader(string filePath)
+    {
+        string[] lines = { "" };
+
+        try
         {
-            try
-            {
-                lines = File.ReadAllLines(path, Encoding.UTF8);
-                return lines;
-            }
-            catch (FileNotFoundException)
-            {
-                Console.WriteLine("\nERRO: The file cannot be found.\n");
-            }
-            catch (DirectoryNotFoundException)
-            {
-                Console.WriteLine("\nERRO: The directory cannot be found.\n");
-            }
-            catch (PathTooLongException)
-            {
-                Console.WriteLine("\nERRO: 'path' exceeds the maxium supported path length.\n");
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine("\nERRO: Ocorreu um erro desconhecido", err);
-            }
+            lines = File.ReadAllLines(filePath, Encoding.UTF8);
+            return lines;
+        }
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("\nERRO: The file cannot be found.\n");
+        }
+        catch (DirectoryNotFoundException)
+        {
+            Console.WriteLine("\nERRO: The directory cannot be found.\n");
+        }
+        catch (PathTooLongException)
+        {
+            Console.WriteLine("\nERRO: 'path' exceeds the maxium supported path length.\n");
+        }
+        catch (Exception err)
+        {
+            Console.WriteLine("\nERRO: Ocorreu um erro desconhecido", err);
         }
         return lines;
     }
@@ -125,7 +243,7 @@ class Program
                     else if (statesInTransition == 1)
                         Console.Write(") -> ");
                     stateFound = true;
-                    foundTransition = true;
+                    //foundTransition = true;
                 }
                 else if (stateFound)
                 {
