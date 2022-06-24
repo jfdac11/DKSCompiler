@@ -77,6 +77,7 @@ class Program
         }
         symbolTable.GenerateSymbolTableReport(fileName, directoryPath);
         symbolTable.ShowSymbolTableItems(fileName);
+        lexicalAnalysisReport.GenerateLexicalTableReport(fileName, directoryPath);
         lexicalAnalysisReport.ShowTableReport(fileName);
 
 
