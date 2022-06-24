@@ -22,5 +22,8 @@ namespace CompilerDK
 
     internal class LexicalTableReport
     {
+        public List<LexicalItemTable> FoundedAtoms { get; set; } = new List<LexicalItemTable>();
+
+
     }
 }
