@@ -62,9 +62,17 @@ namespace CompilerDK
 
         public void GenerateLexicalTableReport(string file_name, string save_path = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks")
         {
+            CultureInfo br = new CultureInfo("br-BR");
+
+            string title = "Relatório da Análise Léxica";
+            DateTime date = DateTime.Now;
+            // alterar para pegar o nome do arquivo de entrada
+            string description = $"{date.ToString("u", br)}-{file_name}.LEX";
+
             // mudar depois de .txt para .LEX
             StreamWriter sw = new StreamWriter(Path.Combine(save_path, $"{file_name}.txt"), true, Encoding.ASCII);
-
+            sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
+            sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
             sw.Write(GetHeader());
             sw.WriteLine(GetColumnsName());
             foreach(LexicalItemTable l in FoundedAtoms)
