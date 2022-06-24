@@ -73,9 +73,18 @@ namespace CompilerDK
             return header_table;
         }
 
-        public void ShowSymbolTableItems()
+        public void ShowSymbolTableItems(string fileName)
         {
-                        
+
+            string title = "TABELA DE SÍMBOLOS";
+            DateTime date = DateTime.Now;
+            CultureInfo br = new CultureInfo("br-BR");
+
+            string description = $"{date.ToString("u", br)}-{fileName}.LEX";
+            Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
+            Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
+
+
             foreach (string header in GetHeaderTable())
                 Console.Write(header);
 
