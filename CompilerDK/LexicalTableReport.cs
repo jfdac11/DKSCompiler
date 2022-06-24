@@ -60,17 +60,17 @@ namespace CompilerDK
             return header;
         }
 
-        public void GenerateLexicalTableReport(string file_name, string save_path = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks")
+        public void GenerateLexicalTableReport(string fileName, string savePath = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks")
         {
             CultureInfo br = new CultureInfo("br-BR");
 
             string title = "Relatório da Análise Léxica";
             DateTime date = DateTime.Now;
             // alterar para pegar o nome do arquivo de entrada
-            string description = $"{date.ToString("u", br)}-{file_name}.LEX";
+            string description = $"{date.ToString("u", br)}-{fileName}.LEX";
 
             // mudar depois de .txt para .LEX
-            StreamWriter sw = new StreamWriter(Path.Combine(save_path, $"{file_name}.txt"), true, Encoding.ASCII);
+            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}.txt"), true, Encoding.ASCII);
             sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
             sw.Write(GetHeader());
@@ -84,14 +84,14 @@ namespace CompilerDK
             sw.Close();
         }
 
-        public void ShowTableReport()
+        public void ShowTableReport(string fileName)
         {
             CultureInfo br = new CultureInfo("br-BR");
 
             string title = "Relatório da Análise Léxica";
             DateTime date = DateTime.Now;
             // alterar para pegar o nome do arquivo de entrada
-            string description = $"{date.ToString("u", br)}-TESTE.LEX";
+            string description = $"{date.ToString("u", br)}-{fileName}.LEX";
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
             Console.Read();
