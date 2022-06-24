@@ -68,7 +68,7 @@ class Program
             
         }
         symbolTable.ShowSymbolTableItems();
-       
+        lexicalAnalysisReport.ShowTableReport();
 
 
         // a partir da sequência de átomos criar uma função para definição de escopo
