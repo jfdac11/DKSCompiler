@@ -104,16 +104,15 @@ namespace CompilerDK
             CultureInfo br = new CultureInfo("br-BR");
             
             // por enquanto gravar no formato .txt para depois gravar em .TAB
-            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}_report.txt"), true, Encoding.ASCII);
+            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}_report.txt"), false, Encoding.ASCII);
 
             DateTime date = DateTime.Now;
 
-            string[] identifier_lines =
-            {
-                "Relatório da Tabela de Símbolos", date.ToString("u", br), "\n\n"
-            };
-                                
+            string title = "Relatório da Tabela de Símbolos";
+            string identifier_lines = $"-{date.ToString("u", br)}-{fileName}.TAB";
 
+
+            sw.WriteLine(title);
             sw.WriteLine(identifier_lines);
             sw.WriteLine(GetHeaderTable());
                 
