@@ -19,7 +19,7 @@ class Program
 
         //string filePath = GetFilePath();
         string fileName = Path.GetFileNameWithoutExtension(filePath);
-
+        string directoryPath = Path.GetDirectoryName(filePath);
         string[] lines = FileReader(filePath);
 
         bool isBlockComment = false;
