@@ -77,6 +77,9 @@ namespace CompilerDK
 
         public void ShowTableReport()
         {
+            string title = "Relatório da Análise Léxica";
+            Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
+            Console.Read();
             Console.Write(GetHeader());
             Console.WriteLine(GetColumnsName());
 
