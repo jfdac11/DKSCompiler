@@ -66,15 +66,6 @@ namespace CompilerDK
             return first_lines;
         }
 
-        private string GetHeaderTable()
-        {
-            string header = "";
-            foreach (string h in HeaderTable)
-                header += $"{h}\t";
-
-            return header;
-        }
-
         public void ShowSymbolTableItems(string fileName)
         {
 

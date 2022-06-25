@@ -52,15 +52,6 @@ namespace CompilerDK
             return header;
         }
 
-        private string GetColumnsName()
-        {
-            string header = "";
-            foreach (string hd in ColumnsName)
-                header += $"{hd}\t";
-
-            return header;
-        }
-
         public void GenerateLexicalTableReport(string fileName, string savePath)
         {
             CultureInfo br = new CultureInfo("br-BR");
