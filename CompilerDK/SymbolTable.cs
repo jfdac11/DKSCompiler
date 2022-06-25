@@ -108,7 +108,7 @@ namespace CompilerDK
             CultureInfo br = new CultureInfo("br-BR");
             
             // por enquanto gravar no formato .txt para depois gravar em .TAB
-            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}_report.TAB"), false, Encoding.ASCII);
+            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}_report.TAB"), false, Encoding.GetEncoding("utf-8"));
 
             DateTime date = DateTime.Now;
 
