@@ -118,12 +118,13 @@ namespace CompilerDK
 
             sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (identifier_lines.Length / 2)) + "}", identifier_lines));
-            sw.WriteLine(GetHeaderTable());
+            sw.WriteLine(String.Format("{0, 5} | {1, 10} | {2, 34} | {3, 20} | {4, 4} | {5, 5} | {6, 0}", HeaderTable[0], HeaderTable[1], HeaderTable[2],
+                HeaderTable[3], HeaderTable[4], HeaderTable[5], HeaderTable[6]));
                 
             foreach(Symbol symbol in Symbols)
             {
                 string first_lines = GetLines(symbol.Lines.Take(5).ToList());
-sw.WriteLine(String.Format("{0,20} | {1,20} | {2,20} | {3,20} | {4,20} | {5,20} | {6,20} |",
+                sw.WriteLine(String.Format("{0,8} | {1,13} | {2,37} | {3,21} | {4,21} | {5,5} | {6,18}",
                                    Symbols.IndexOf(symbol).ToString(), symbol.Atom.Code, symbol.Lexeme, symbol.LengthBeforeTruncation.ToString(),
                                    symbol.LengthAfterTruncation.ToString(), symbol.Type.ToString(), first_lines));
             }
