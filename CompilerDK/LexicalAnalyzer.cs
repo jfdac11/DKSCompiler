@@ -18,7 +18,7 @@ namespace CompilerDK
             LanguageSymbolTable = languageSymbolTable;
         }
 
-        public Symbol IdenfifyAtom(string source, int startPosition, bool isFunction) //
+        public Symbol IdenfifyAtom(string source, int startPosition) //
         {
             string lexeme = "";
             CurrentPosition = startPosition;
@@ -43,7 +43,7 @@ namespace CompilerDK
             symbol.LengthAfterTruncation = lexeme.Length;
             symbol.Lexeme = lexeme;
 
-            symbol.Atom = FinalAtom(lexeme, isFunction);
+            symbol.Atom = FinalAtom(lexeme);
 
             return symbol;
 
@@ -134,14 +134,14 @@ namespace CompilerDK
             return possibleAtoms;
         }
 
-        public Atom FinalAtom(string lexeme, bool isFunction)
+        public Atom FinalAtom(string lexeme)
         {
             List<Atom> finalList = new List<Atom>(CurrentPassList);
             foreach (Atom a in CurrentPassList)
             {
                 bool canBe = a.FinalValidation(lexeme);
                 //se for uma função remove o identifier
-                if (!canBe || (isFunction && a.Code == "ID01") || (!isFunction && a.Code == "ID04"))
+                if (!canBe)
                 {
                     finalList.Remove(a);
                 };
@@ -154,8 +154,15 @@ namespace CompilerDK
             }
             else if (finalList.Count > 1)
             {
-                Atom finalAtom = finalList.Where(atom => atom.IsReservedWord == true).Last();
-                return  finalAtom != null ? finalAtom : null;
+                foreach (Atom a in finalList)
+                {
+                    if (a.IsReservedWord)
+                    {
+                        return a;
+                    }
+                }
+
+                return new Atom("*", "", ""); //átomo não identificado, pode ser Identifier ou Function 
             }
             else
             {
