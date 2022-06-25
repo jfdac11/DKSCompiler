@@ -39,7 +39,7 @@ namespace CompilerDK
             "maria.lima@aln.senaicimatec.edu.br"
         };
 
-        private string[] ColumnsName = { "LEXEME\t", "CODIGO ATOMO\t", "INDICE TABELA DE SIMBOLOS\t" };
+        private string[] ColumnsName = { "LEXEME", "CODIGO ATOMO", "INDICE TABELA DE SIMBOLOS" };
         public List<LexicalItemTable> FoundedAtoms { get; set; } = new List<LexicalItemTable>();
 
         private string GetHeader()
@@ -96,12 +96,13 @@ namespace CompilerDK
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
             Console.WriteLine();
             Console.Write(GetHeader());
-            Console.WriteLine(GetColumnsName());
 
-            foreach(LexicalItemTable l in FoundedAtoms)
+            Console.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", ColumnsName[0], ColumnsName[1], ColumnsName[2]));
+
+            foreach (LexicalItemTable l in FoundedAtoms)
             {
-                string txt = $"{l.Lexeme}\t{l.AtomCode}\t{l.SymbolTableIndex.ToString()}";
-                Console.WriteLine(txt);
+                //string txt = $"{l.Lexeme}\t{l.AtomCode}\t{l.SymbolTableIndex.ToString()}";
+                Console.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", l.Lexeme, l.AtomCode, l.SymbolTableIndex.ToString()));
             }
         }
 
