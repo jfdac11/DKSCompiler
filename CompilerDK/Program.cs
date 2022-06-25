@@ -56,49 +56,53 @@ class Program
                 else if (ClosesBlockComment(line, startPosition))
                 {
                     isBlockComment = false;
-                    startPosition = startPosition + 2;
+                    startPosition += 2;
                 }
 
-                if (!isBlockComment && startPosition < line.Length)
+                if (!isBlockComment)
                 {
-                    Symbol symbolResp = lexicalAnalyzer.IdenfifyAtom(line, startPosition); //átomo encontrado
-
-                    if (symbolResp.Atom != null)
-                    {
-                        if (symbolResp.Atom.Code == "SR03")
-                        {
-                            if (symbolTable.Symbols.Last().Atom.Code == "*")
-                            {
-                                Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
-                                Function.IsReservedWord = false;
-                                symbolTable.Symbols.Last().Atom = Function;
-
-                                lexicalAnalysisReport.FoundedAtoms.Last().AtomCode = Function.Code;
-                            }
-                        }
-
-                        if (languageSymbolTable.HasType(symbolResp.Atom.Code))
-                            symbolResp.Type = languageSymbolTable.GetType(symbolResp.Atom.Code);
-                        else
-                            symbolResp.Type = "-";
-
-                        symbolResp.Lines.Add(i + 1);
-
-                        int lastIndex = symbolTable.SearchSymbolIndex(symbolResp.Lexeme);
-
-                        if (lastIndex == -1)
-                            lastIndex = symbolTable.AddSymbolToTable(symbolResp);
-                        else
-                            symbolTable.UpdateSymbolTable(symbolResp);
-
-                        LexicalItemTable itemTable = new LexicalItemTable(symbolResp.Lexeme, symbolResp.Atom.Code, lastIndex);
-
-                        lexicalAnalysisReport.FoundedAtoms.Add(itemTable);
-                    }
-                    startPosition = lexicalAnalyzer.CurrentPosition;
                     if (IsLineComment(line, startPosition))
                     {
                         startPosition = line.Length;
+                    }
+
+                    if (startPosition < line.Length)
+                    {
+                        Symbol symbolResp = lexicalAnalyzer.IdenfifyAtom(line, startPosition); //átomo encontrado
+
+                        if (symbolResp.Atom != null)
+                        {
+                            if (symbolResp.Atom.Code == "SR03")
+                            {
+                                if (symbolTable.Symbols.Last().Atom.Code == "*")
+                                {
+                                    Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
+                                    Function.IsReservedWord = false;
+                                    symbolTable.Symbols.Last().Atom = Function;
+
+                                    lexicalAnalysisReport.FoundedAtoms.Last().AtomCode = Function.Code;
+                                }
+                            }
+
+                            if (languageSymbolTable.HasType(symbolResp.Atom.Code))
+                                symbolResp.Type = languageSymbolTable.GetType(symbolResp.Atom.Code);
+                            else
+                                symbolResp.Type = "-";
+
+                            symbolResp.Lines.Add(i + 1);
+
+                            int lastIndex = symbolTable.SearchSymbolIndex(symbolResp.Lexeme);
+
+                            if (lastIndex == -1)
+                                lastIndex = symbolTable.AddSymbolToTable(symbolResp);
+                            else
+                                symbolTable.UpdateSymbolTable(symbolResp);
+
+                            LexicalItemTable itemTable = new LexicalItemTable(symbolResp.Lexeme, symbolResp.Atom.Code, lastIndex);
+
+                            lexicalAnalysisReport.FoundedAtoms.Add(itemTable);
+                        }
+                        startPosition = lexicalAnalyzer.CurrentPosition;
                     }
                 }
                 else
