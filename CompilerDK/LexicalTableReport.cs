@@ -25,6 +25,7 @@ namespace CompilerDK
     {
         private string[] Header =
         {
+            "CÓDIGO DA EQUIPE: EQ1",
             "Davi Machado Costa",
             "75998712714",
             "davi.costa@aln.senaicimatec.edu.br",
