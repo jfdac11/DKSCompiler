@@ -11,20 +11,17 @@ class Program
         SymbolTable symbolTable = new SymbolTable();
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(languageSymbolTable);
         LexicalTableReport lexicalAnalysisReport = new LexicalTableReport();
-        //List<Atom> lexicalAnalysisReport = new List<Atom>();
 
-        string filePath = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks";
+        //string filePath = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks";
         //@"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\teste.dks";
         // @"E:\davim\GitHub\DKSCompiler\CompilerDK\teste.dks";
 
-        //string filePath = GetFilePath();
+        string filePath = GetFilePath();
         string fileName = Path.GetFileNameWithoutExtension(filePath);
         string directoryPath = Path.GetDirectoryName(filePath);
         string[] lines = FileReader(filePath);
 
         bool isBlockComment = false;
-        //CreateAutomateStates(lines);
-        //CreateTransitionTable(lines);
 
         for (int i = 0; i < lines.Count(); i++)
         {
@@ -161,13 +158,21 @@ class Program
 
     private static string GetFilePath()
     {
-        Console.WriteLine(" Enter the path to te .dks format file: ");
-        string path = Console.ReadLine();
+        string path;
+        bool error = true;
+        do
+        {
+            Console.WriteLine(" Enter the path to te .dks format file: ");
+            path = Console.ReadLine();
 
-        if (string.IsNullOrEmpty(path))
-            Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
-        else if (!Path.GetExtension(path).Equals(".dks"))
-            Console.WriteLine(" \nERRO: Invalid file format, please select a .dks extension file\n");
+            if (string.IsNullOrEmpty(path))
+                Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
+            else if (!Path.GetExtension(path).Equals(".dks"))
+                Console.WriteLine(" \nERRO: Invalid file format, please select a .dks extension file\n");
+            else
+                error = false;
+
+        } while (error);             
 
         return path;
     }
@@ -200,114 +205,4 @@ class Program
         return lines;
     }
 
-    private static void CreateAutomateStates(string[] lines)
-    {
-        Console.WriteLine("Enter your sum number: ");
-        int sum = Int16.Parse(Console.ReadLine());
-        Console.WriteLine("Enter your wrong number: ");
-        int wrongNumber = Int16.Parse(Console.ReadLine());
-
-        bool stateFound = false;
-        string numberStr = "";
-        int number = 0;
-
-        foreach (string line in lines)
-        {
-            for (int charPos = 0; charPos < line.Length; charPos++)
-            {
-                char ch = line[charPos];
-
-                if (ch == '.')
-                {
-                    stateFound = true;
-                    Console.Write(ch);
-                }
-                else if (stateFound)
-                {
-                    bool isNumber = Char.IsNumber(ch);
-                    if (isNumber)
-                    {
-                        numberStr += ch;
-                    }
-                    if (!isNumber || charPos + 1 == line.Length)
-                    {
-                        stateFound = false;
-                        number = Int16.Parse(numberStr);
-                        if (number >= wrongNumber)
-                            Console.Write(number + sum + " ");
-                        else
-                            Console.Write(number + " ");
-                        numberStr = "";
-                    }
-                }
-                else
-                {
-                    Console.Write(ch);
-                }
-            }
-
-            Console.Write('\n');
-        }
-    }
-
-    private static void CreateTransitionTable(string[] lines)
-    {
-        bool stateFound = false;
-        int statesInTransition = 0;
-        string numberStr = "";
-        int number = 0;
-
-        foreach (string line in lines)
-        {
-            for (int charPos = 0; charPos < line.Length; charPos++)
-            {
-                char ch = line[charPos];
-
-                if (ch == '.')
-                {
-                    if (statesInTransition == 0)
-                        Console.Write('(');
-                    else if (statesInTransition == 1)
-                        Console.Write(") -> ");
-                    stateFound = true;
-                    //foundTransition = true;
-                }
-                else if (stateFound)
-                {
-
-                    bool isNumber = Char.IsNumber(ch);
-                    if (isNumber)
-                    {
-                        numberStr += ch;
-                    }
-                    if (!isNumber || charPos + 1 == line.Length)
-                    {
-
-                        statesInTransition++;
-                        stateFound = false;
-                        number = Int16.Parse(numberStr);
-
-                        numberStr = "";
-                        if (statesInTransition == 2)
-                        {
-                            Console.Write(number + ")\n(" + number + ", ");
-                            statesInTransition = 1;
-                        }
-                        else
-                        {
-                            Console.Write(number + ",");
-                        }
-                    }
-                }
-                else if (ch == '{' || ch == '}' || ch == '(' || ch == ')' || ch == '[' || ch == ']')
-                {
-                    Console.Write("VAZIO");
-                }
-                else if (ch != 32 && ch != 34)
-                {
-                    Console.Write(ch);
-                } 
-            }
-        }
-    }
 }

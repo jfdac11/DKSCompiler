@@ -107,29 +107,38 @@ namespace CompilerDK
         {
             CultureInfo br = new CultureInfo("br-BR");
             
-            // por enquanto gravar no formato .txt para depois gravar em .TAB
-            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}_report.TAB"), false, Encoding.GetEncoding("utf-8"));
-
             DateTime date = DateTime.Now;
 
             string title = "Relatório da Tabela de Símbolos";
             string identifier_lines = $"-{date.ToString("u", br)}-{fileName}.TAB";
 
-
-            sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
-            sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (identifier_lines.Length / 2)) + "}", identifier_lines));
-            sw.WriteLine(String.Format("{0, 5} | {1, 10} | {2, 34} | {3, 20} | {4, 4} | {5, 5} | {6, 0}", HeaderTable[0], HeaderTable[1], HeaderTable[2],
-                HeaderTable[3], HeaderTable[4], HeaderTable[5], HeaderTable[6]));
-                
-            foreach(Symbol symbol in Symbols)
+            try
             {
-                string first_lines = GetLines(symbol.Lines.Take(5).ToList());
-                sw.WriteLine(String.Format("{0,8} | {1,13} | {2,37} | {3,21} | {4,21} | {5,5} | {6,18}",
-                                   Symbols.IndexOf(symbol).ToString(), symbol.Atom.Code, symbol.Lexeme, symbol.LengthBeforeTruncation.ToString(),
-                                   symbol.LengthAfterTruncation.ToString(), symbol.Type.ToString(), first_lines));
-            }
+                StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}_report.TAB"), false, Encoding.GetEncoding("utf-8"));
 
-            sw.Close();
+                sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
+                sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (identifier_lines.Length / 2)) + "}", identifier_lines));
+                sw.WriteLine(String.Format("{0, 5} | {1, 10} | {2, 34} | {3, 20} | {4, 4} | {5, 5} | {6, 0}", HeaderTable[0], HeaderTable[1], HeaderTable[2],
+                    HeaderTable[3], HeaderTable[4], HeaderTable[5], HeaderTable[6]));
+
+                foreach (Symbol symbol in Symbols)
+                {
+                    string first_lines = GetLines(symbol.Lines.Take(5).ToList());
+                    sw.WriteLine(String.Format("{0,8} | {1,13} | {2,37} | {3,21} | {4,21} | {5,5} | {6,18}",
+                                       Symbols.IndexOf(symbol).ToString(), symbol.Atom.Code, symbol.Lexeme, symbol.LengthBeforeTruncation.ToString(),
+                                       symbol.LengthAfterTruncation.ToString(), symbol.Type.ToString(), first_lines));
+                }
+
+                sw.Close();
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("IOException:\r\n\r\n" + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception:\r\n\r\n" + ex.Message);
+            }           
                
         }
     }
