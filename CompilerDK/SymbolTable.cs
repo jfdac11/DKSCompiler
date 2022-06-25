@@ -123,13 +123,12 @@ namespace CompilerDK
             foreach(Symbol symbol in Symbols)
             {
                 string first_lines = GetLines(symbol.Lines.Take(5).ToList());
-
-                string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
-                sw.WriteLine(item);
+sw.WriteLine(String.Format("{0,20} | {1,20} | {2,20} | {3,20} | {4,20} | {5,20} | {6,20} |",
+                                   Symbols.IndexOf(symbol).ToString(), symbol.Atom.Code, symbol.Lexeme, symbol.LengthBeforeTruncation.ToString(),
+                                   symbol.LengthAfterTruncation.ToString(), symbol.Type.ToString(), first_lines));
             }
 
             sw.Close();
-            //await File.WriteAllLinesAsync($"{savePath}/symbol_table_report.txt", lines);
                
         }
     }
