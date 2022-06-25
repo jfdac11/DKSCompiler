@@ -107,7 +107,6 @@ namespace CompilerDK
         {
             CultureInfo br = new CultureInfo("br-BR");
             
-
             DateTime date = DateTime.Now;
 
             string title = "Relatório da Tabela de Símbolos";
@@ -139,8 +138,7 @@ namespace CompilerDK
             catch (Exception ex)
             {
                 Console.WriteLine("Exception:\r\n\r\n" + ex.Message);
-            }
-            
+            }           
                
         }
     }

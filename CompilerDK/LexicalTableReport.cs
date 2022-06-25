@@ -69,18 +69,31 @@ namespace CompilerDK
 
             string description = $"{date.ToString("u", br)}-{fileName}.LEX";
 
-            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}.LEX"), false, Encoding.GetEncoding("utf-8"));
-            sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
-            sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
-            sw.Write(GetHeader());
-
-            sw.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", ColumnsName[0], ColumnsName[1], ColumnsName[2]));
-
-            foreach(LexicalItemTable l in FoundedAtoms)
+            try
             {
-                sw.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", l.Lexeme, l.AtomCode, l.SymbolTableIndex.ToString()));
+                StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}.LEX"), false, Encoding.GetEncoding("utf-8"));
+                sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
+                sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
+                sw.Write(GetHeader());
+
+                sw.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", ColumnsName[0], ColumnsName[1], ColumnsName[2]));
+
+                foreach (LexicalItemTable l in FoundedAtoms)
+                {
+                    sw.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", l.Lexeme, l.AtomCode, l.SymbolTableIndex.ToString()));
+                }
+                sw.Close();
             }
-            sw.Close();
+            catch (IOException ex)
+            {
+                Console.WriteLine("IOException:\r\n\r\n" + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception:\r\n\r\n" + ex.Message);
+            }
+
+
         }
 
         public void ShowTableReport(string fileName)
