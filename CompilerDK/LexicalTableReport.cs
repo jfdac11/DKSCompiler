@@ -39,7 +39,7 @@ namespace CompilerDK
             "maria.lima@aln.senaicimatec.edu.br"
         };
 
-        private string[] ColumnsName = { "LEXEME\t", "CODIGO ATOMO\t", "INDICE TABELA DE SIMBOLOS\t" };
+        private string[] ColumnsName = { "LEXEME", "CODIGO ATOMO", "INDICE TABELA DE SIMBOLOS" };
         public List<LexicalItemTable> FoundedAtoms { get; set; } = new List<LexicalItemTable>();
 
         private string GetHeader()
@@ -66,20 +66,19 @@ namespace CompilerDK
 
             string title = "Relatório da Análise Léxica";
             DateTime date = DateTime.Now;
-            // alterar para pegar o nome do arquivo de entrada
+
             string description = $"{date.ToString("u", br)}-{fileName}.LEX";
 
-            // mudar depois de .txt para .LEX
-            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}.txt"), true, Encoding.ASCII);
+            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}.LEX"), false, Encoding.GetEncoding("utf-8"));
             sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
             sw.Write(GetHeader());
-            sw.WriteLine(GetColumnsName());
+
+            sw.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", ColumnsName[0], ColumnsName[1], ColumnsName[2]));
+
             foreach(LexicalItemTable l in FoundedAtoms)
             {
-                sw.Write($"\n{l.Lexeme}");
-                sw.Write($"\t{l.AtomCode}");
-                sw.Write($"\t{l.SymbolTableIndex.ToString()}");
+                sw.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", l.Lexeme, l.AtomCode, l.SymbolTableIndex.ToString()));
             }
             sw.Close();
         }
@@ -90,18 +89,18 @@ namespace CompilerDK
 
             string title = "Relatório da Análise Léxica";
             DateTime date = DateTime.Now;
-            // alterar para pegar o nome do arquivo de entrada
+
             string description = $"{date.ToString("u", br)}-{fileName}.LEX";
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
             Console.WriteLine();
             Console.Write(GetHeader());
-            Console.WriteLine(GetColumnsName());
 
-            foreach(LexicalItemTable l in FoundedAtoms)
+            Console.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", ColumnsName[0], ColumnsName[1], ColumnsName[2]));
+
+            foreach (LexicalItemTable l in FoundedAtoms)
             {
-                string txt = $"{l.Lexeme}\t{l.AtomCode}\t{l.SymbolTableIndex.ToString()}";
-                Console.WriteLine(txt);
+                Console.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", l.Lexeme, l.AtomCode, l.SymbolTableIndex.ToString()));
             }
         }
 

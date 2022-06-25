@@ -22,7 +22,7 @@ namespace CompilerDK
     {
         private string[] HeaderTable =
             {
-                    "Tabela de Símbolos", "\n\n", "ENTRADA\t", "CODIGO\t", "LEXEME\t", "QUANTIDADE_ANTES\t", "QUANTIDADE_DEPOIS\t", "TIPO\t", "5_PRIMEIRAS_LINHAS\t"
+                    "ENTRADA\t", "CODIGO\t", "LEXEME\t", "QUANTIDADE_ANTES\t", "QUANTIDADE_DEPOIS\t", "TIPO\t", "5_PRIMEIRAS_LINHAS\t"
             };
         public List<Symbol> Symbols { get; set; } = new List<Symbol>();
 
@@ -86,17 +86,20 @@ namespace CompilerDK
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
 
+            Console.WriteLine("\n\n");
 
-            Console.WriteLine(GetHeaderTable());
+            Console.WriteLine(String.Format("{0, 5} | {1, 10} | {2, 30} | {3, 15} | {4, 4} | {5, 5} | {6, 0}", HeaderTable[0], HeaderTable[1], HeaderTable[2],
+                HeaderTable[3], HeaderTable[4], HeaderTable[5], HeaderTable[6]));
 
-            Console.WriteLine("\n");
             foreach (Symbol symbol in Symbols)
             {
                 string first_lines = GetLines(symbol.Lines.Take(5).ToList());
                 
                 string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
-
-                Console.WriteLine(item);
+                
+                Console.WriteLine(String.Format("{0,8} | {1,13} | {2,37} | {3,21} | {4,21} | {5,5} | {6,10}",
+                                   Symbols.IndexOf(symbol).ToString(), symbol.Atom.Code, symbol.Lexeme, symbol.LengthBeforeTruncation.ToString(),
+                                   symbol.LengthAfterTruncation.ToString(), symbol.Type.ToString(), first_lines));
             }
         }
 
@@ -105,7 +108,7 @@ namespace CompilerDK
             CultureInfo br = new CultureInfo("br-BR");
             
             // por enquanto gravar no formato .txt para depois gravar em .TAB
-            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}_report.txt"), false, Encoding.ASCII);
+            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}_report.TAB"), false, Encoding.GetEncoding("utf-8"));
 
             DateTime date = DateTime.Now;
 
@@ -113,20 +116,20 @@ namespace CompilerDK
             string identifier_lines = $"-{date.ToString("u", br)}-{fileName}.TAB";
 
 
-            sw.WriteLine(title);
-            sw.WriteLine(identifier_lines);
-            sw.WriteLine(GetHeaderTable());
+            sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
+            sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (identifier_lines.Length / 2)) + "}", identifier_lines));
+            sw.WriteLine(String.Format("{0, 5} | {1, 10} | {2, 34} | {3, 20} | {4, 4} | {5, 5} | {6, 0}", HeaderTable[0], HeaderTable[1], HeaderTable[2],
+                HeaderTable[3], HeaderTable[4], HeaderTable[5], HeaderTable[6]));
                 
             foreach(Symbol symbol in Symbols)
             {
                 string first_lines = GetLines(symbol.Lines.Take(5).ToList());
-
-                string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
-                sw.WriteLine(item);
+                sw.WriteLine(String.Format("{0,8} | {1,13} | {2,37} | {3,21} | {4,21} | {5,5} | {6,18}",
+                                   Symbols.IndexOf(symbol).ToString(), symbol.Atom.Code, symbol.Lexeme, symbol.LengthBeforeTruncation.ToString(),
+                                   symbol.LengthAfterTruncation.ToString(), symbol.Type.ToString(), first_lines));
             }
 
             sw.Close();
-            //await File.WriteAllLinesAsync($"{savePath}/symbol_table_report.txt", lines);
                
         }
     }
