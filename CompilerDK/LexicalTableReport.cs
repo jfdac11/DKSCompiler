@@ -74,12 +74,12 @@ namespace CompilerDK
             sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
             sw.Write(GetHeader());
-            sw.WriteLine(GetColumnsName());
+
+            sw.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", ColumnsName[0], ColumnsName[1], ColumnsName[2]));
+
             foreach(LexicalItemTable l in FoundedAtoms)
             {
-                sw.Write($"\n{l.Lexeme}");
-                sw.Write($"\t{l.AtomCode}");
-                sw.Write($"\t{l.SymbolTableIndex.ToString()}");
+                sw.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", l.Lexeme, l.AtomCode, l.SymbolTableIndex.ToString()));
             }
             sw.Close();
         }
@@ -101,7 +101,6 @@ namespace CompilerDK
 
             foreach (LexicalItemTable l in FoundedAtoms)
             {
-                //string txt = $"{l.Lexeme}\t{l.AtomCode}\t{l.SymbolTableIndex.ToString()}";
                 Console.WriteLine(String.Format("{0, 35} | {1, 25} | {2, 30} |", l.Lexeme, l.AtomCode, l.SymbolTableIndex.ToString()));
             }
         }
