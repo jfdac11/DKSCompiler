@@ -10,7 +10,7 @@ namespace CompilerDK
     public class LanguageSymbolTable
     {
         public List<Atom> Atoms { get; set; } = new List<Atom>();
-        public Regex LanguageCharacterValidator = new Regex("[a-z]|[0-9]|\"|!|=|<|>|#|&|\\(|\\)|;|\\[|\\]|{|}|,|%|\\/|\\*|\\+|\\||-|\\s|\\$|\\.|_|\'");
+        public Regex LanguageCharacterValidator = new Regex("[a-zA-Z]|[0-9]|\"|!|=|<|>|#|&|\\(|\\)|;|\\[|\\]|{|}|,|%|\\/|\\*|\\+|\\||-|\\s|\\$|\\.|_|\'");
         private Dictionary<string, string> DefaultCodeTypes = new Dictionary<string, string>();
       
         public LanguageSymbolTable()
@@ -105,7 +105,7 @@ namespace CompilerDK
             Atoms.Add(Minus);
 
 
-            Atom Identifier = new Atom("ID01", "^(([a-zA-Z]|_)+[0-9]*)+$", "^(([a-zA-Z]|_)+[0-9]*)+$");
+            Atom Identifier = new Atom("ID01", "^([a-zA-Z]|_)+([a-zA-Z]|_|[0-9])*$", "^([a-zA-Z]|_)+([a-zA-Z]|_|[0-9])*$");
             Identifier.IsReservedWord = false;
             Atoms.Add(Identifier);
             Atom ConstantString = new Atom("ID02", "^\"([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"$", "^\"(([a-zA-Z]|\\s|[0-9]|\\$|_|\\.)+\"?)?$");
@@ -114,7 +114,7 @@ namespace CompilerDK
             Atom IntegerNumber = new Atom("ID03", "^[0-9]+$", "^[0-9]+$");
             IntegerNumber.IsReservedWord = false;
             Atoms.Add(IntegerNumber);
-            Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
+            Atom Function = new Atom("ID04", "^^[a-zA-Z]+([a-zA-Z]|[0-9])*$$", "^[a-zA-Z]+([a-zA-Z]|[0-9])*$");
             Function.IsReservedWord = false;
             Atoms.Add(Function);
             Atom Character = new Atom("ID05", "^'[a-zA-Z]'$", @"^'([a-zA-Z]'?)?$");
