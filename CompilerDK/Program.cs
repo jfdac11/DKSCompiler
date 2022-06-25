@@ -77,7 +77,7 @@ class Program
                             {
                                 if (symbolTable.Symbols.Last().Atom.Code == "ID01")
                                 {
-                                    Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
+                                    Atom Function = languageSymbolTable.Atoms.Find(a => a.Code == "ID04");
                                     Function.IsReservedWord = false;
                                     symbolTable.Symbols.Last().Atom = Function;
 

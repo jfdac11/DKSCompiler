@@ -162,7 +162,7 @@ namespace CompilerDK
                     }
                 }
 
-                return finalList.Find(a => a.Code == "ID01"); // retorna variável como padrão, podendo se tornar função depois
+                return LanguageSymbolTable.Atoms.Find(a => a.Code == "ID01"); // retorna variável como padrão, podendo se tornar função depois
             }
             else
             {
