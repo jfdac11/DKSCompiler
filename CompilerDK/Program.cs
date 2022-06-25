@@ -11,13 +11,12 @@ class Program
         SymbolTable symbolTable = new SymbolTable();
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(languageSymbolTable);
         LexicalTableReport lexicalAnalysisReport = new LexicalTableReport();
-        //List<Atom> lexicalAnalysisReport = new List<Atom>();
 
-        string filePath = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks";
+        //string filePath = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks";
         //@"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\teste.dks";
         // @"E:\davim\GitHub\DKSCompiler\CompilerDK\teste.dks";
 
-        //string filePath = GetFilePath();
+        string filePath = GetFilePath();
         string fileName = Path.GetFileNameWithoutExtension(filePath);
         string directoryPath = Path.GetDirectoryName(filePath);
         string[] lines = FileReader(filePath);
@@ -161,13 +160,21 @@ class Program
 
     private static string GetFilePath()
     {
-        Console.WriteLine(" Enter the path to te .dks format file: ");
-        string path = Console.ReadLine();
+        string path;
+        bool error = true;
+        do
+        {
+            Console.WriteLine(" Enter the path to te .dks format file: ");
+            path = Console.ReadLine();
 
-        if (string.IsNullOrEmpty(path))
-            Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
-        else if (!Path.GetExtension(path).Equals(".dks"))
-            Console.WriteLine(" \nERRO: Invalid file format, please select a .dks extension file\n");
+            if (string.IsNullOrEmpty(path))
+                Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
+            else if (!Path.GetExtension(path).Equals(".dks"))
+                Console.WriteLine(" \nERRO: Invalid file format, please select a .dks extension file\n");
+            else
+                error = false;
+
+        } while (error);             
 
         return path;
     }
