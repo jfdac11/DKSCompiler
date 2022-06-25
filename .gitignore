@@ -399,3 +399,4 @@ FodyWeavers.xsd
 CompilerDK/teste.txt
 CompilerDK/teste_report.txt
 *.TAB
+*.LEX
