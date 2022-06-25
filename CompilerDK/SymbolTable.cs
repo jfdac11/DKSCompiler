@@ -88,7 +88,7 @@ namespace CompilerDK
 
             Console.WriteLine("\n\n");
 
-            Console.WriteLine(String.Format("{0, 20} | {1, 20} | {2, 20} | {3, 20} | {4, 20} | {5, 20} | {6, 20} |", HeaderTable[0], HeaderTable[1], HeaderTable[2],
+            Console.WriteLine(String.Format("{0, 5} | {1, 10} | {2, 30} | {3, 15} | {4, 4} | {5, 5} | {6, 0}", HeaderTable[0], HeaderTable[1], HeaderTable[2],
                 HeaderTable[3], HeaderTable[4], HeaderTable[5], HeaderTable[6]));
 
             foreach (Symbol symbol in Symbols)
@@ -97,7 +97,7 @@ namespace CompilerDK
                 
                 string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
                 
-                Console.WriteLine(String.Format("{0,20} | {1,20} | {2,20} | {3,20} | {4,20} | {5,20} | {6,20} |",
+                Console.WriteLine(String.Format("{0,8} | {1,13} | {2,37} | {3,21} | {4,21} | {5,5} | {6,10}",
                                    Symbols.IndexOf(symbol).ToString(), symbol.Atom.Code, symbol.Lexeme, symbol.LengthBeforeTruncation.ToString(),
                                    symbol.LengthAfterTruncation.ToString(), symbol.Type.ToString(), first_lines));
             }
