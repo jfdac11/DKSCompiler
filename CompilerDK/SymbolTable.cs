@@ -114,7 +114,7 @@ namespace CompilerDK
 
             try
             {
-                StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}_report.TAB"), false, Encoding.GetEncoding("utf-8"));
+                StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}.TAB"), false, Encoding.GetEncoding("utf-8"));
 
                 sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
                 sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (identifier_lines.Length / 2)) + "}", identifier_lines));
