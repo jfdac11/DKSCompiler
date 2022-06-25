@@ -43,11 +43,22 @@ class Program
 
                 if (!isBlockComment && startPosition < line.Length)
                 {
-                    bool isFunction = IsFunction();
-                    Symbol symbolResp = lexicalAnalyzer.IdenfifyAtom(line, startPosition, isFunction); //átomo encontrado
+                    Symbol symbolResp = lexicalAnalyzer.IdenfifyAtom(line, startPosition); //átomo encontrado
 
                     if (symbolResp.Atom != null)
                     {
+                        if(symbolResp.Atom.Code == "SR03")
+                        {
+                            if(symbolTable.Symbols.Last().Atom.Code == "*")
+                            {
+                                Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
+                                Function.IsReservedWord = false;
+                                symbolTable.Symbols.Last().Atom = Function;
+
+                                lexicalAnalysisReport.FoundedAtoms.Last().AtomCode = Function.Code;
+                            }
+                        }
+
                         if (languageSymbolTable.HasType(symbolResp.Atom.Code))
                             symbolResp.Type = languageSymbolTable.GetType(symbolResp.Atom.Code);
                         else
@@ -80,6 +91,10 @@ class Program
             } while (startPosition < line.Length);
             
         }
+
+        symbolTable = AddIdentifierCode(symbolTable);
+        lexicalAnalysisReport = AddIdentifierCode(lexicalAnalysisReport);
+
         symbolTable.GenerateSymbolTableReport(fileName, directoryPath);
         symbolTable.ShowSymbolTableItems(fileName);
         lexicalAnalysisReport.GenerateLexicalTableReport(fileName, directoryPath);
@@ -91,9 +106,21 @@ class Program
 
     }
 
-    public static bool IsFunction()
+    public static LexicalTableReport AddIdentifierCode(LexicalTableReport lexicalTableReport)
     {
-        return false;
+        lexicalTableReport.FoundedAtoms.Where(sym => sym.AtomCode.Equals("*"))
+                .ToList().ForEach(s => s.AtomCode = "ID01");
+        return lexicalTableReport;
+    }
+
+    public static SymbolTable AddIdentifierCode(SymbolTable symbolTable)
+    {
+        Atom Identifier = new Atom("ID01", "^(([a-zA-Z]|_)+[0-9]*)+$", "^(([a-zA-Z]|_)+[0-9]*)+$");
+        Identifier.IsReservedWord = false;
+
+        symbolTable.Symbols.Where(sym => sym.Atom.Code.Equals("*"))
+                .ToList().ForEach(s => s.Atom = Identifier);
+        return symbolTable;
     }
 
     public static bool IsLineComment(string source, int position)
