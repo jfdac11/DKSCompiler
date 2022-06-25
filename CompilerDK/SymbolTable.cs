@@ -22,7 +22,7 @@ namespace CompilerDK
     {
         private string[] HeaderTable =
             {
-                    "Tabela de Símbolos", "\n\n", "ENTRADA\t", "CODIGO\t", "LEXEME\t", "QUANTIDADE_ANTES\t", "QUANTIDADE_DEPOIS\t", "TIPO\t", "5_PRIMEIRAS_LINHAS\t"
+                    "ENTRADA\t", "CODIGO\t", "LEXEME\t", "QUANTIDADE_ANTES\t", "QUANTIDADE_DEPOIS\t", "TIPO\t", "5_PRIMEIRAS_LINHAS\t"
             };
         public List<Symbol> Symbols { get; set; } = new List<Symbol>();
 
@@ -86,17 +86,20 @@ namespace CompilerDK
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
 
+            Console.WriteLine("\n\n");
 
-            Console.WriteLine(GetHeaderTable());
+            Console.WriteLine(String.Format("{0, 20} | {1, 20} | {2, 20} | {3, 20} | {4, 20} | {5, 20} | {6, 20} |", HeaderTable[0], HeaderTable[1], HeaderTable[2],
+                HeaderTable[3], HeaderTable[4], HeaderTable[5], HeaderTable[6]));
 
-            Console.WriteLine("\n");
             foreach (Symbol symbol in Symbols)
             {
                 string first_lines = GetLines(symbol.Lines.Take(5).ToList());
                 
                 string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
-
-                Console.WriteLine(item);
+                
+                Console.WriteLine(String.Format("{0,20} | {1,20} | {2,20} | {3,20} | {4,20} | {5,20} | {6,20} |",
+                                   Symbols.IndexOf(symbol).ToString(), symbol.Atom.Code, symbol.Lexeme, symbol.LengthBeforeTruncation.ToString(),
+                                   symbol.LengthAfterTruncation.ToString(), symbol.Type.ToString(), first_lines));
             }
         }
 
