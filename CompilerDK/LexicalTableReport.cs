@@ -70,7 +70,7 @@ namespace CompilerDK
             string description = $"{date.ToString("u", br)}-{fileName}.LEX";
 
             // mudar depois de .txt para .LEX
-            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}.txt"), true, Encoding.ASCII);
+            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}.LEX"), true, Encoding.ASCII);
             sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
             sw.Write(GetHeader());
