@@ -44,7 +44,7 @@ class Program
 
         for (int i = 0; i < lines.Count(); i++)
         {
-            string line = lines[i];
+            string line = lines[i].ToLower();
             int startPosition = 0;
 
             do
