@@ -12,14 +12,32 @@ class Program
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(languageSymbolTable);
         LexicalTableReport lexicalAnalysisReport = new LexicalTableReport();
 
+        string filePath = "";
+        string[] lines = { "" };
+        bool error;
+
         //string filePath = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks";
         //@"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\teste.dks";
         // @"E:\davim\GitHub\DKSCompiler\CompilerDK\teste.dks";
 
-        string filePath = GetFilePath();
+        do
+        {
+            try
+            {
+                error = false;
+                filePath = GetFilePath();
+                lines = FileReader(filePath);
+            }
+            catch
+            {
+                error = true;
+            }
+        } while (error);
+
+
         string fileName = Path.GetFileNameWithoutExtension(filePath);
         string directoryPath = Path.GetDirectoryName(filePath);
-        string[] lines = FileReader(filePath);
+
 
         bool isBlockComment = false;
 
@@ -27,12 +45,14 @@ class Program
         {
             string line = lines[i];
             int startPosition = 0;
-            
+
             do
             {
-                if (OpenBlockComment(line, startPosition)) {
+                if (OpenBlockComment(line, startPosition))
+                {
                     isBlockComment = true;
-                }else if (ClosesBlockComment(line, startPosition))
+                }
+                else if (ClosesBlockComment(line, startPosition))
                 {
                     isBlockComment = false;
                     startPosition = startPosition + 2;
@@ -44,9 +64,9 @@ class Program
 
                     if (symbolResp.Atom != null)
                     {
-                        if(symbolResp.Atom.Code == "SR03")
+                        if (symbolResp.Atom.Code == "SR03")
                         {
-                            if(symbolTable.Symbols.Last().Atom.Code == "*")
+                            if (symbolTable.Symbols.Last().Atom.Code == "*")
                             {
                                 Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
                                 Function.IsReservedWord = false;
@@ -62,7 +82,7 @@ class Program
                             symbolResp.Type = "-";
 
                         symbolResp.Lines.Add(i + 1);
-                        
+
                         int lastIndex = symbolTable.SearchSymbolIndex(symbolResp.Lexeme);
 
                         if (lastIndex == -1)
@@ -84,9 +104,9 @@ class Program
                 {
                     startPosition++;
                 }
-                
+
             } while (startPosition < line.Length);
-            
+
         }
 
         symbolTable = AddIdentifierCode(symbolTable);
@@ -159,48 +179,53 @@ class Program
     private static string GetFilePath()
     {
         string path;
-        bool error = true;
-        do
+
+        Console.WriteLine(" Enter the path to te .dks format file: ");
+        path = Console.ReadLine();
+
+        if (string.IsNullOrEmpty(path))
         {
-            Console.WriteLine(" Enter the path to te .dks format file: ");
-            path = Console.ReadLine();
-
-            if (string.IsNullOrEmpty(path))
-                Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
-            else if (!Path.GetExtension(path).Equals(".dks"))
-                Console.WriteLine(" \nERRO: Invalid file format, please select a .dks extension file\n");
-            else
-                error = false;
-
-        } while (error);             
+            string err = "\nERRO: No file specified, please select a .dks file\n";
+            Console.WriteLine(err);
+            throw new Exception(err);
+        }
+        else if (!Path.GetExtension(path).Equals(".dks"))
+        {
+            string err = "\nERRO: Invalid file format, please select a .dks extension file\n";
+            Console.WriteLine(err);
+            throw new Exception(err);
+        }
 
         return path;
     }
 
     private static string[] FileReader(string filePath)
     {
-        string[] lines = { "" };
+        string[] lines;
 
         try
         {
             lines = File.ReadAllLines(filePath, Encoding.UTF8);
-            return lines;
         }
         catch (FileNotFoundException)
         {
             Console.WriteLine("\nERRO: The file cannot be found.\n");
+            throw;
         }
         catch (DirectoryNotFoundException)
         {
             Console.WriteLine("\nERRO: The directory cannot be found.\n");
+            throw;
         }
         catch (PathTooLongException)
         {
             Console.WriteLine("\nERRO: 'path' exceeds the maxium supported path length.\n");
+            throw;
         }
         catch (Exception err)
         {
             Console.WriteLine("\nERRO: Ocorreu um erro desconhecido", err);
+            throw;
         }
         return lines;
     }
