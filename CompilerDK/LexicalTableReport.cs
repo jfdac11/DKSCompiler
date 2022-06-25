@@ -66,11 +66,10 @@ namespace CompilerDK
 
             string title = "Relatório da Análise Léxica";
             DateTime date = DateTime.Now;
-            // alterar para pegar o nome do arquivo de entrada
+
             string description = $"{date.ToString("u", br)}-{fileName}.LEX";
 
-            // mudar depois de .txt para .LEX
-            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}.LEX"), true, Encoding.ASCII);
+            StreamWriter sw = new StreamWriter(Path.Combine(savePath, $"{fileName}.LEX"), false, Encoding.ASCII);
             sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             sw.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
             sw.Write(GetHeader());
@@ -90,7 +89,7 @@ namespace CompilerDK
 
             string title = "Relatório da Análise Léxica";
             DateTime date = DateTime.Now;
-            // alterar para pegar o nome do arquivo de entrada
+
             string description = $"{date.ToString("u", br)}-{fileName}.LEX";
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (title.Length / 2)) + "}", title));
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (description.Length / 2)) + "}", description));
