@@ -52,6 +52,7 @@ class Program
                 if (OpenBlockComment(line, startPosition))
                 {
                     isBlockComment = true;
+                    startPosition ++;
                 }
                 else if (ClosesBlockComment(line, startPosition))
                 {
