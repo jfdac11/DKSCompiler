@@ -162,7 +162,7 @@ namespace CompilerDK
                     }
                 }
 
-                return new Atom("*", "", ""); //átomo não identificado, pode ser Identifier ou Function 
+                return finalList.Find(a => a.Code == "ID01"); // retorna variável como padrão, podendo se tornar função depois
             }
             else
             {

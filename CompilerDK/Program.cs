@@ -75,7 +75,7 @@ class Program
                         {
                             if (symbolResp.Atom.Code == "SR03")
                             {
-                                if (symbolTable.Symbols.Last().Atom.Code == "*")
+                                if (symbolTable.Symbols.Last().Atom.Code == "ID01")
                                 {
                                     Atom Function = new Atom("ID04", "^([a-zA-Z]+[0-9]*)+$", "^([a-zA-Z]+[0-9]*)+$");
                                     Function.IsReservedWord = false;
@@ -115,9 +115,6 @@ class Program
 
         }
 
-        symbolTable = AddIdentifierCode(symbolTable);
-        lexicalAnalysisReport = AddIdentifierCode(lexicalAnalysisReport);
-
         symbolTable.GenerateSymbolTableReport(fileName, directoryPath);
         symbolTable.ShowSymbolTableItems(fileName);
         lexicalAnalysisReport.GenerateLexicalTableReport(fileName, directoryPath);
@@ -127,23 +124,6 @@ class Program
         // a partir da sequência de átomos criar uma função para definição de escopo
         // vai identificar a sequência de átomos
 
-    }
-
-    public static LexicalTableReport AddIdentifierCode(LexicalTableReport lexicalTableReport)
-    {
-        lexicalTableReport.FoundedAtoms.Where(sym => sym.AtomCode.Equals("*"))
-                .ToList().ForEach(s => s.AtomCode = "ID01");
-        return lexicalTableReport;
-    }
-
-    public static SymbolTable AddIdentifierCode(SymbolTable symbolTable)
-    {
-        Atom Identifier = new Atom("ID01", "^(([a-zA-Z]|_)+[0-9]*)+$", "^(([a-zA-Z]|_)+[0-9]*)+$");
-        Identifier.IsReservedWord = false;
-
-        symbolTable.Symbols.Where(sym => sym.Atom.Code.Equals("*"))
-                .ToList().ForEach(s => s.Atom = Identifier);
-        return symbolTable;
     }
 
     public static bool IsLineComment(string source, int position)
