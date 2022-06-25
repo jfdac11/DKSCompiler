@@ -81,3 +81,5 @@ Instruções de como usar o sistema.
 - [@joao](https://github.com/Joao)
 - [@AmadoMaria](https://github.com/AmadoMaria)
 
+## 📝 Relatórios
+Os relatórios .LEX e .TAB são gerados no mesmo diretório do arquivo .DKS lido
