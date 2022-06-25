@@ -26,6 +26,7 @@ class Program
             {
                 error = false;
                 filePath = GetFilePath();
+                string extension = Path.GetExtension(filePath);
                 lines = FileReader(filePath);
             }
             catch
@@ -191,9 +192,16 @@ class Program
         }
         else if (!Path.GetExtension(path).Equals(".dks"))
         {
-            string err = "\nERRO: Invalid file format, please select a .dks extension file\n";
-            Console.WriteLine(err);
-            throw new Exception(err);
+            if (Path.GetExtension(path).Equals(""))
+            {
+                path += ".dks";
+            }
+            else
+            {
+                string err = "\nERRO: Invalid file format, please select a .dks extension file\n";
+                Console.WriteLine(err);
+                throw new Exception(err);
+            }
         }
 
         return path;
