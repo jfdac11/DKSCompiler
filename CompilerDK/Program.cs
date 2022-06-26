@@ -75,12 +75,13 @@ class Program
                         {
                             if (symbolResp.Atom.Code == "SR03")
                             {
-                                if (symbolTable.Symbols.Last().Atom.Code == "ID01")
-                                {
-                                    Atom Function = languageSymbolTable.Atoms.Find(a => a.Code == "ID04");
-                                    Function.IsReservedWord = false;
-                                    symbolTable.Symbols.Last().Atom = Function;
+                                Symbol lastSymbol = symbolTable.Symbols.Last();
+                                Atom Function = languageSymbolTable.Atoms.Find(a => a.Code == "ID04");
+                                Function.IsReservedWord = false;
 
+                                if (lastSymbol.Atom.Code == "ID01" && Function.FinalValidation(lastSymbol.Lexeme)) { 
+
+                                    symbolTable.Symbols.Last().Atom = Function;
                                     lexicalAnalysisReport.FoundedAtoms.Last().AtomCode = Function.Code;
                                 }
                             }
