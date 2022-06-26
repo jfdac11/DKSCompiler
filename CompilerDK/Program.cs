@@ -11,75 +11,95 @@ class Program
         SymbolTable symbolTable = new SymbolTable();
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(languageSymbolTable);
         LexicalTableReport lexicalAnalysisReport = new LexicalTableReport();
-        //List<Atom> lexicalAnalysisReport = new List<Atom>();
 
-        string filePath = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks";
+        string filePath = "";
+        string[] lines = { "" };
+        bool error;
+
+        //string filePath = @"E:\Projetos\Faculdade\DKSCompiler\CompilerDK\teste.dks";
         //@"D:\Users\maria\Documents\SENAI\7º semestre\Compiladores\DKSCompiler\CompilerDK\teste.dks";
         // @"E:\davim\GitHub\DKSCompiler\CompilerDK\teste.dks";
 
-        //string filePath = GetFilePath();
+        do
+        {
+            try
+            {
+                error = false;
+                filePath = GetFilePath();
+                string extension = Path.GetExtension(filePath);
+                lines = FileReader(filePath);
+            }
+            catch
+            {
+                error = true;
+            }
+        } while (error);
+
+
         string fileName = Path.GetFileNameWithoutExtension(filePath);
         string directoryPath = Path.GetDirectoryName(filePath);
-        string[] lines = FileReader(filePath);
+
 
         bool isBlockComment = false;
-        //CreateAutomateStates(lines);
-        //CreateTransitionTable(lines);
 
         for (int i = 0; i < lines.Count(); i++)
         {
-            string line = lines[i];
+            string line = lines[i].ToLower();
             int startPosition = 0;
-            
+
             do
             {
-                if (OpenBlockComment(line, startPosition)) {
+                if (OpenBlockComment(line, startPosition))
+                {
                     isBlockComment = true;
-                }else if (ClosesBlockComment(line, startPosition))
+                    startPosition++;
+                }
+                else if (ClosesBlockComment(line, startPosition))
                 {
                     isBlockComment = false;
-                    startPosition = startPosition + 2;
+                    startPosition += 2;
                 }
 
-                if (!isBlockComment && startPosition < line.Length)
+                if (!isBlockComment)
                 {
-                    bool isFunction = IsFunction();
-                    Symbol symbolResp = lexicalAnalyzer.IdenfifyAtom(line, startPosition, isFunction); //átomo encontrado
-
-                    if (symbolResp.Atom != null)
-                    {
-                        if (languageSymbolTable.HasType(symbolResp.Atom.Code))
-                            symbolResp.Type = languageSymbolTable.GetType(symbolResp.Atom.Code);
-                        else
-                            symbolResp.Type = "-";
-
-                        symbolResp.Lines.Add(i + 1);
-                        
-                        int lastIndex = symbolTable.SearchSymbolIndex(symbolResp.Lexeme);
-
-                        if (lastIndex == -1)
-                            lastIndex = symbolTable.AddSymbolToTable(symbolResp);
-                        else
-                            symbolTable.UpdateSymbolTable(symbolResp);
-
-                        LexicalItemTable itemTable = new LexicalItemTable(symbolResp.Lexeme, symbolResp.Atom.Code, lastIndex);
-
-                        lexicalAnalysisReport.FoundedAtoms.Add(itemTable);
-                    }
-                    startPosition = lexicalAnalyzer.CurrentPosition;
                     if (IsLineComment(line, startPosition))
                     {
                         startPosition = line.Length;
+                    }
+
+                    if (startPosition < line.Length)
+                    {
+                        Symbol symbolResp = lexicalAnalyzer.IdenfifyAtom(line, startPosition); //átomo encontrado
+
+                        if (symbolResp.Atom != null)
+                        {
+                            VerifyEscope(symbolResp, symbolTable, languageSymbolTable, lexicalAnalysisReport);
+
+                            if (languageSymbolTable.HasType(symbolResp.Atom.Code))
+                                symbolResp.Type = languageSymbolTable.GetType(symbolResp.Atom.Code);
+                            else
+                                symbolResp.Type = "-";
+
+                            symbolResp.Lines.Add(i + 1);
+
+                            int lastIndex = symbolTable.SearchAndModifyTable(symbolResp);
+
+                            LexicalItemTable itemTable = new LexicalItemTable(symbolResp.Lexeme, symbolResp.Atom.Code, lastIndex);
+
+                            lexicalAnalysisReport.FoundedAtoms.Add(itemTable);
+                        }
+                        startPosition = lexicalAnalyzer.CurrentPosition;
                     }
                 }
                 else
                 {
                     startPosition++;
                 }
-                
+
             } while (startPosition < line.Length);
-            
+
         }
+
         symbolTable.GenerateSymbolTableReport(fileName, directoryPath);
         symbolTable.ShowSymbolTableItems(fileName);
         lexicalAnalysisReport.GenerateLexicalTableReport(fileName, directoryPath);
@@ -90,12 +110,36 @@ class Program
         // vai identificar a sequência de átomos
 
     }
-
-    public static bool IsFunction()
+    private static void VerifyEscope(Symbol symbolResp, SymbolTable symbolTable, LanguageSymbolTable languageSymbolTable, LexicalTableReport lexicalAnalysisReport)
     {
-        return false;
-    }
+        if (symbolResp.Atom.Code == "SR03")
+        {
+            LexicalItemTable lastItemTable = lexicalAnalysisReport.FoundedAtoms.Last();
+            Atom Function = languageSymbolTable.Atoms.Find(a => a.Code == "ID04");
 
+            if (lastItemTable.AtomCode == "ID01" && Function.FinalValidation(lastItemTable.Lexeme))
+            {
+                Symbol symbol = symbolTable.Symbols[lastItemTable.SymbolTableIndex];
+                List<int> symbolLines = symbol.Lines;
+
+                if (symbol.Lines.Count == 1)
+                    symbolTable.Symbols.Remove(symbol);
+                else
+                {
+                    int lastLine = symbol.Lines.Last();
+                    symbolLines = new List<int>();
+                    symbolLines.Add(lastLine);
+                    symbol.Lines.Remove(lastLine);
+                }
+
+                Symbol newSymbol = new Symbol(Function, symbol.Lexeme, symbol.LengthBeforeTruncation, symbol.LengthAfterTruncation, symbol.Type, symbolLines);
+                int newSymbolIndex = symbolTable.SearchAndModifyTable(newSymbol);
+
+                lastItemTable.AtomCode = Function.Code;
+                lastItemTable.SymbolTableIndex = newSymbolIndex;
+            }
+        }
+    }
     public static bool IsLineComment(string source, int position)
     {
         if (position >= source.Length - 1)
@@ -134,153 +178,63 @@ class Program
 
     private static string GetFilePath()
     {
+        string path;
+
         Console.WriteLine(" Enter the path to te .dks format file: ");
-        string path = Console.ReadLine();
+        path = Console.ReadLine();
 
         if (string.IsNullOrEmpty(path))
-            Console.WriteLine(" \nERRO: No file specified, please select a .dks file\n");
+        {
+            string err = "\nERRO: No file specified, please select a .dks file\n";
+            Console.WriteLine(err);
+            throw new Exception(err);
+        }
         else if (!Path.GetExtension(path).Equals(".dks"))
-            Console.WriteLine(" \nERRO: Invalid file format, please select a .dks extension file\n");
+        {
+            if (Path.GetExtension(path).Equals(""))
+            {
+                path += ".dks";
+            }
+            else
+            {
+                string err = "\nERRO: Invalid file format, please select a .dks extension file\n";
+                Console.WriteLine(err);
+                throw new Exception(err);
+            }
+        }
 
         return path;
     }
 
     private static string[] FileReader(string filePath)
     {
-        string[] lines = { "" };
+        string[] lines;
 
         try
         {
             lines = File.ReadAllLines(filePath, Encoding.UTF8);
-            return lines;
         }
         catch (FileNotFoundException)
         {
             Console.WriteLine("\nERRO: The file cannot be found.\n");
+            throw;
         }
         catch (DirectoryNotFoundException)
         {
             Console.WriteLine("\nERRO: The directory cannot be found.\n");
+            throw;
         }
         catch (PathTooLongException)
         {
             Console.WriteLine("\nERRO: 'path' exceeds the maxium supported path length.\n");
+            throw;
         }
         catch (Exception err)
         {
             Console.WriteLine("\nERRO: Ocorreu um erro desconhecido", err);
+            throw;
         }
         return lines;
     }
 
-    private static void CreateAutomateStates(string[] lines)
-    {
-        Console.WriteLine("Enter your sum number: ");
-        int sum = Int16.Parse(Console.ReadLine());
-        Console.WriteLine("Enter your wrong number: ");
-        int wrongNumber = Int16.Parse(Console.ReadLine());
-
-        bool stateFound = false;
-        string numberStr = "";
-        int number = 0;
-
-        foreach (string line in lines)
-        {
-            for (int charPos = 0; charPos < line.Length; charPos++)
-            {
-                char ch = line[charPos];
-
-                if (ch == '.')
-                {
-                    stateFound = true;
-                    Console.Write(ch);
-                }
-                else if (stateFound)
-                {
-                    bool isNumber = Char.IsNumber(ch);
-                    if (isNumber)
-                    {
-                        numberStr += ch;
-                    }
-                    if (!isNumber || charPos + 1 == line.Length)
-                    {
-                        stateFound = false;
-                        number = Int16.Parse(numberStr);
-                        if (number >= wrongNumber)
-                            Console.Write(number + sum + " ");
-                        else
-                            Console.Write(number + " ");
-                        numberStr = "";
-                    }
-                }
-                else
-                {
-                    Console.Write(ch);
-                }
-            }
-
-            Console.Write('\n');
-        }
-    }
-
-    private static void CreateTransitionTable(string[] lines)
-    {
-        bool stateFound = false;
-        int statesInTransition = 0;
-        string numberStr = "";
-        int number = 0;
-
-        foreach (string line in lines)
-        {
-            for (int charPos = 0; charPos < line.Length; charPos++)
-            {
-                char ch = line[charPos];
-
-                if (ch == '.')
-                {
-                    if (statesInTransition == 0)
-                        Console.Write('(');
-                    else if (statesInTransition == 1)
-                        Console.Write(") -> ");
-                    stateFound = true;
-                    //foundTransition = true;
-                }
-                else if (stateFound)
-                {
-
-                    bool isNumber = Char.IsNumber(ch);
-                    if (isNumber)
-                    {
-                        numberStr += ch;
-                    }
-                    if (!isNumber || charPos + 1 == line.Length)
-                    {
-
-                        statesInTransition++;
-                        stateFound = false;
-                        number = Int16.Parse(numberStr);
-
-                        numberStr = "";
-                        if (statesInTransition == 2)
-                        {
-                            Console.Write(number + ")\n(" + number + ", ");
-                            statesInTransition = 1;
-                        }
-                        else
-                        {
-                            Console.Write(number + ",");
-                        }
-                    }
-                }
-                else if (ch == '{' || ch == '}' || ch == '(' || ch == ')' || ch == '[' || ch == ']')
-                {
-                    Console.Write("VAZIO");
-                }
-                else if (ch != 32 && ch != 34)
-                {
-                    Console.Write(ch);
-                } 
-            }
-        }
-    }
 }
