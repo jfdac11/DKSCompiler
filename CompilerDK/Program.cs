@@ -52,7 +52,7 @@ class Program
                 if (OpenBlockComment(line, startPosition))
                 {
                     isBlockComment = true;
-                    startPosition ++;
+                    startPosition++;
                 }
                 else if (ClosesBlockComment(line, startPosition))
                 {
@@ -75,14 +75,28 @@ class Program
                         {
                             if (symbolResp.Atom.Code == "SR03")
                             {
-                                Symbol lastSymbol = symbolTable.Symbols.Last();
+                                LexicalItemTable lastItemTable = lexicalAnalysisReport.FoundedAtoms.Last();
                                 Atom Function = languageSymbolTable.Atoms.Find(a => a.Code == "ID04");
-                                Function.IsReservedWord = false;
 
-                                if (lastSymbol.Atom.Code == "ID01" && Function.FinalValidation(lastSymbol.Lexeme)) { 
+                                if (lastItemTable.AtomCode == "ID01" && Function.FinalValidation(lastItemTable.Lexeme))
+                                {
+                                    Symbol symbol = symbolTable.Symbols[lastItemTable.SymbolTableIndex];
+                                    List<int> symbolLines = symbol.Lines;
 
-                                    symbolTable.Symbols.Last().Atom = Function;
-                                    lexicalAnalysisReport.FoundedAtoms.Last().AtomCode = Function.Code;
+                                    if (symbol.Lines.Count == 1)
+                                        symbolTable.Symbols.Remove(symbol);
+                                    else
+                                    {
+                                        int lastLine = symbol.Lines.Last();
+                                        symbolLines = new List<int>();
+                                        symbolLines.Add(lastLine);
+                                        symbol.Lines.Remove(lastLine);
+                                    }
+
+                                    Symbol newSymbol = new Symbol(Function, symbol.Lexeme, symbol.LengthBeforeTruncation, symbol.LengthAfterTruncation, symbol.Type, symbolLines);
+                                    symbolTable.SearchAndModifyTable(newSymbol);
+
+                                    lastItemTable.AtomCode = Function.Code;
                                 }
                             }
 
@@ -93,12 +107,7 @@ class Program
 
                             symbolResp.Lines.Add(i + 1);
 
-                            int lastIndex = symbolTable.SearchSymbolIndex(symbolResp.Lexeme);
-
-                            if (lastIndex == -1)
-                                lastIndex = symbolTable.AddSymbolToTable(symbolResp);
-                            else
-                                symbolTable.UpdateSymbolTable(symbolResp);
+                            int lastIndex = symbolTable.SearchAndModifyTable(symbolResp);
 
                             LexicalItemTable itemTable = new LexicalItemTable(symbolResp.Lexeme, symbolResp.Atom.Code, lastIndex);
 

@@ -15,7 +15,19 @@ namespace CompilerDK
         public int LengthAfterTruncation { get; set; }
         public string Type { get; set; }
         public List<int> Lines { get; set; } = new List<int>();
+        public Symbol(Atom atom, string lexeme, int beforeTrunc, int afterTrunc, string type, List<int> lines)
+        {
+            Atom = atom;
+            Lexeme = lexeme;
+            LengthBeforeTruncation = beforeTrunc;
+            LengthAfterTruncation = afterTrunc;
+            Type = type;
+            Lines = lines;
+        }
 
+        public Symbol()
+        {
+        }
     }
 
     public class SymbolTable
@@ -27,28 +39,39 @@ namespace CompilerDK
         public List<Symbol> Symbols { get; set; } = new List<Symbol>();
 
 
-        public int AddSymbolToTable(Symbol symbol)
+        private int AddSymbolToTable(Symbol symbol)
         {
             this.Symbols.Add(symbol);
 
             return this.Symbols.Count() - 1;
         }
 
-        public int SearchSymbolIndex(string lexeme)
+        private int SearchSymbolIndex(Symbol symbol)
         {
 
-            if (Symbols.Any(lex => lex.Lexeme == lexeme))
-                return Symbols.FindIndex(lex => lex.Lexeme == lexeme);
-            
+            if (Symbols.Any(sym => sym.Lexeme == symbol.Lexeme && sym.Atom == symbol.Atom))
+                return Symbols.FindIndex(sym => sym.Lexeme == symbol.Lexeme && sym.Atom == symbol.Atom);
+
             return -1;
         }
 
-        public void UpdateSymbolTable(Symbol symbol)
+        private void UpdateSymbolTable(Symbol symbol)
         {
             Symbols.Where(sym => sym.Lexeme.Equals(symbol.Lexeme) &&
                                             sym.Atom == symbol.Atom
                                           )
                             .ToList().ForEach(s => s.Lines.Add(symbol.Lines[0]));
+        }
+
+        public int SearchAndModifyTable(Symbol newSymbol)
+        {
+            int lastIndex = SearchSymbolIndex(newSymbol);
+
+            if (lastIndex == -1)
+                lastIndex = AddSymbolToTable(newSymbol);
+            else
+                UpdateSymbolTable(newSymbol);
+            return lastIndex;
         }
 
         private string GetLines(List<int> lines)
@@ -85,9 +108,9 @@ namespace CompilerDK
             foreach (Symbol symbol in Symbols)
             {
                 string first_lines = GetLines(symbol.Lines.Take(5).ToList());
-                
+
                 string item = $"{Symbols.IndexOf(symbol).ToString()}\t{symbol.Atom.Code}\t{symbol.Lexeme}\t{symbol.LengthBeforeTruncation.ToString()}\t{symbol.LengthAfterTruncation.ToString()}\t{symbol.Type}\t{first_lines}";
-                
+
                 Console.WriteLine(String.Format("{0,8} | {1,13} | {2,37} | {3,21} | {4,21} | {5,5} | {6,10}",
                                    Symbols.IndexOf(symbol).ToString(), symbol.Atom.Code, symbol.Lexeme, symbol.LengthBeforeTruncation.ToString(),
                                    symbol.LengthAfterTruncation.ToString(), symbol.Type.ToString(), first_lines));
@@ -97,7 +120,7 @@ namespace CompilerDK
         public void GenerateSymbolTableReport(string fileName, string savePath)
         {
             CultureInfo br = new CultureInfo("br-BR");
-            
+
             DateTime date = DateTime.Now;
 
             string title = "Relatório da Tabela de Símbolos";
@@ -129,8 +152,8 @@ namespace CompilerDK
             catch (Exception ex)
             {
                 Console.WriteLine("Exception:\r\n\r\n" + ex.Message);
-            }           
-               
+            }
+
         }
     }
 
