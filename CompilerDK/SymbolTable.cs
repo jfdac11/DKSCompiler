@@ -60,7 +60,12 @@ namespace CompilerDK
             Symbols.Where(sym => sym.Lexeme.Equals(symbol.Lexeme) &&
                                             sym.Atom == symbol.Atom
                                           )
-                            .ToList().ForEach(s => s.Lines.Add(symbol.Lines[0]));
+                            .ToList().ForEach(s =>
+                            {
+                                s.LengthBeforeTruncation = symbol.LengthBeforeTruncation;
+                                s.Lines.Add(symbol.Lines[0]);
+                            }
+                            );
         }
 
         public int SearchAndModifyTable(Symbol newSymbol)
