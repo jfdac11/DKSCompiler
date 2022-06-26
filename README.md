@@ -19,7 +19,7 @@
 
 ## 🧐 Sobre <a name = "sobre"></a>
 
-Projeto criado para exemplificar um analisador léxico para a linguagem DonkSoup na disciplina de Compiladores, ministrada pelo professor Osvaldo Requião Melo, do Centro Universitário Senai Cimatec.
+Projeto criado para exemplificar um analisador léxico (_Static Checker_) para a linguagem DonkSoup na disciplina de Compiladores, ministrada pelo professor Osvaldo Requião Melo, do Centro Universitário SENAI CIMATEC.
 
 ## 🏁 Iniciando <a name = "inicio"></a>
 
