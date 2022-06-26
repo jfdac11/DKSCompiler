@@ -73,32 +73,7 @@ class Program
 
                         if (symbolResp.Atom != null)
                         {
-                            if (symbolResp.Atom.Code == "SR03")
-                            {
-                                LexicalItemTable lastItemTable = lexicalAnalysisReport.FoundedAtoms.Last();
-                                Atom Function = languageSymbolTable.Atoms.Find(a => a.Code == "ID04");
-
-                                if (lastItemTable.AtomCode == "ID01" && Function.FinalValidation(lastItemTable.Lexeme))
-                                {
-                                    Symbol symbol = symbolTable.Symbols[lastItemTable.SymbolTableIndex];
-                                    List<int> symbolLines = symbol.Lines;
-
-                                    if (symbol.Lines.Count == 1)
-                                        symbolTable.Symbols.Remove(symbol);
-                                    else
-                                    {
-                                        int lastLine = symbol.Lines.Last();
-                                        symbolLines = new List<int>();
-                                        symbolLines.Add(lastLine);
-                                        symbol.Lines.Remove(lastLine);
-                                    }
-
-                                    Symbol newSymbol = new Symbol(Function, symbol.Lexeme, symbol.LengthBeforeTruncation, symbol.LengthAfterTruncation, symbol.Type, symbolLines);
-                                    symbolTable.SearchAndModifyTable(newSymbol);
-
-                                    lastItemTable.AtomCode = Function.Code;
-                                }
-                            }
+                            VerifyEscope(symbolResp, symbolTable, languageSymbolTable, lexicalAnalysisReport);
 
                             if (languageSymbolTable.HasType(symbolResp.Atom.Code))
                                 symbolResp.Type = languageSymbolTable.GetType(symbolResp.Atom.Code);
@@ -135,7 +110,35 @@ class Program
         // vai identificar a sequência de átomos
 
     }
+    private static void VerifyEscope(Symbol symbolResp, SymbolTable symbolTable, LanguageSymbolTable languageSymbolTable, LexicalTableReport lexicalAnalysisReport)
+    {
+        if (symbolResp.Atom.Code == "SR03")
+        {
+            LexicalItemTable lastItemTable = lexicalAnalysisReport.FoundedAtoms.Last();
+            Atom Function = languageSymbolTable.Atoms.Find(a => a.Code == "ID04");
 
+            if (lastItemTable.AtomCode == "ID01" && Function.FinalValidation(lastItemTable.Lexeme))
+            {
+                Symbol symbol = symbolTable.Symbols[lastItemTable.SymbolTableIndex];
+                List<int> symbolLines = symbol.Lines;
+
+                if (symbol.Lines.Count == 1)
+                    symbolTable.Symbols.Remove(symbol);
+                else
+                {
+                    int lastLine = symbol.Lines.Last();
+                    symbolLines = new List<int>();
+                    symbolLines.Add(lastLine);
+                    symbol.Lines.Remove(lastLine);
+                }
+
+                Symbol newSymbol = new Symbol(Function, symbol.Lexeme, symbol.LengthBeforeTruncation, symbol.LengthAfterTruncation, symbol.Type, symbolLines);
+                symbolTable.SearchAndModifyTable(newSymbol);
+
+                lastItemTable.AtomCode = Function.Code;
+            }
+        }
+    }
     public static bool IsLineComment(string source, int position)
     {
         if (position >= source.Length - 1)
