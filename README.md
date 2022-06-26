@@ -41,7 +41,7 @@ Após iniciar o programa, no terminal aberto basta inserir a localização do ar
 
 ## ✍️ Desenvolvedores <a name = "desenvolvedores"></a>
 
-- [@davi](https://github.com/seu-username)
-- [@fernandanlisboa](https://github.com/fernandanlisboa)
-- [@joao](https://github.com/Joao)
-- [@AmadoMaria](https://github.com/AmadoMaria)
+- Davi Costa - [@DMCDavi](https://github.com/DMCDavi)
+- Fernanda Lisboa - [@fernandanlisboa](https://github.com/fernandanlisboa)
+- João Caldas - [@jfdac11](https://github.com/jfdac11)
+- Maria Amado - [@AmadoMaria](https://github.com/AmadoMaria)
