@@ -28,7 +28,7 @@ namespace CompilerDK
             lexeme = GenerateLargestLexeme(source);
 
             // Se o lexeme é o último do source verificamos se já forma um átomo
-            CurrentPassList = PossibleAtoms(lexeme);
+            CurrentPassList = PossibleFinalAtoms(lexeme);
             if(CurrentPassList.Count == 0) //se não for nenhum átomo, reduzimos até virar um
             {
                 CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
@@ -104,6 +104,7 @@ namespace CompilerDK
 
         public string ReduceLexeme(string lexeme)
         {
+            List<Atom> FinalPassList = new List<Atom>();
             do
             {
                 if (lexeme.Length > 1)
@@ -112,9 +113,8 @@ namespace CompilerDK
                     CurrentPosition--;// aqui retrata a posição que estamos no arquivo
                 }
 
-                CurrentPassList = PossibleAtoms(lexeme);
-
-            } while (CurrentPassList.Count == 0 && lexeme.Length > 1);
+                FinalPassList = PossibleFinalAtoms(lexeme);
+            } while (FinalPassList.Count == 0 && lexeme.Length > 1);
             // Verificação que garante que um lexeme é um átomo específico
 
             return lexeme;
@@ -133,6 +133,21 @@ namespace CompilerDK
             };
             return possibleAtoms;
         }
+
+        public List<Atom> PossibleFinalAtoms(string lexeme) // ver se passo aqui a passlist
+        {
+            List<Atom> possibleAtoms = new List<Atom>(CurrentPassList);
+            foreach (Atom a in CurrentPassList)
+            {
+                bool canBe = a.FinalValidation(lexeme);
+                if (!canBe)
+                {
+                    possibleAtoms.Remove(a); // remove o atual da lista
+                };
+            };
+            return possibleAtoms;
+        }
+
 
         public Atom FinalAtom(string lexeme)
         {
