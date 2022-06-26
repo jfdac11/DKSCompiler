@@ -133,9 +133,10 @@ class Program
                 }
 
                 Symbol newSymbol = new Symbol(Function, symbol.Lexeme, symbol.LengthBeforeTruncation, symbol.LengthAfterTruncation, symbol.Type, symbolLines);
-                symbolTable.SearchAndModifyTable(newSymbol);
+                int newSymbolIndex = symbolTable.SearchAndModifyTable(newSymbol);
 
                 lastItemTable.AtomCode = Function.Code;
+                lastItemTable.SymbolTableIndex = newSymbolIndex;
             }
         }
     }
