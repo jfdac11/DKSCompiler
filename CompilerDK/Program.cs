@@ -82,7 +82,7 @@ class Program
 
                             symbolResp.Lines.Add(i + 1);
 
-                            int lastIndex = symbolTable.SearchAndModifyTable(symbolResp);
+                            string lastIndex = symbolTable.SearchAndModifyTable(symbolResp);
 
                             LexicalItemTable itemTable = new LexicalItemTable(symbolResp.Lexeme, symbolResp.Atom.Code, lastIndex);
 
@@ -119,7 +119,7 @@ class Program
 
             if (lastItemTable.AtomCode == "ID01" && Function.FinalValidation(lastItemTable.Lexeme))
             {
-                Symbol symbol = symbolTable.Symbols[lastItemTable.SymbolTableIndex];
+                Symbol symbol = symbolTable.Symbols[Int32.Parse(lastItemTable.SymbolTableIndex)];
                 List<int> symbolLines = symbol.Lines;
 
                 if (symbol.Lines.Count == 1)
@@ -133,7 +133,7 @@ class Program
                 }
 
                 Symbol newSymbol = new Symbol(Function, symbol.Lexeme, symbol.LengthBeforeTruncation, symbol.LengthAfterTruncation, symbol.Type, symbolLines);
-                int newSymbolIndex = symbolTable.SearchAndModifyTable(newSymbol);
+                string newSymbolIndex = symbolTable.SearchAndModifyTable(newSymbol);
 
                 lastItemTable.AtomCode = Function.Code;
                 lastItemTable.SymbolTableIndex = newSymbolIndex;

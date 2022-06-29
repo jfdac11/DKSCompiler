@@ -11,9 +11,9 @@ namespace CompilerDK
     {
         public string Lexeme { get; set; }
         public string AtomCode { get; set; }
-        public int SymbolTableIndex { get; set; }
+        public string SymbolTableIndex { get; set; }
 
-        public LexicalItemTable(string lexeme, string atomCode, int symbolTableIndex)
+        public LexicalItemTable(string lexeme, string atomCode, string symbolTableIndex)
         {
             Lexeme = lexeme;
             AtomCode = atomCode;
