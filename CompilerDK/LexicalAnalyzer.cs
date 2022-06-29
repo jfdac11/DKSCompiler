@@ -53,6 +53,7 @@ namespace CompilerDK
         {
             if(lexeme.Length > 35)
             {
+                int positionBeforeTruncate = CurrentPosition;
                 string truncatedLexeme;
                 if (lexeme[0] == '\"' && lexeme[lexeme.Length -1] == '\"')
                 {
@@ -65,14 +66,15 @@ namespace CompilerDK
                 }
                 
                 CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
-                CurrentPassList = PossibleAtoms(truncatedLexeme);
+                CurrentPassList = PossibleFinalAtoms(truncatedLexeme);
                 if (CurrentPassList.Count == 0) //se não for nenhum átomo, reduzimos até virar um
                 {
                     CurrentPassList = new List<Atom>(LanguageSymbolTable.Atoms);
                     // Em seguida reduzimos o lexeme até que possa ser um átomo novamente
-                    lexeme = ReduceLexeme(truncatedLexeme);
+                    truncatedLexeme = ReduceLexeme(truncatedLexeme);
                     //adicionar o fecha aspas da string
                 }
+                CurrentPosition = positionBeforeTruncate;
                 return truncatedLexeme;
             }
             return lexeme;

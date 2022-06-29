@@ -68,15 +68,19 @@ namespace CompilerDK
                             );
         }
 
-        public int SearchAndModifyTable(Symbol newSymbol)
+        public string SearchAndModifyTable(Symbol newSymbol)
         {
-            int lastIndex = SearchSymbolIndex(newSymbol);
+            if (!newSymbol.Atom.IsReservedWord)
+            {
+                int lastIndex = SearchSymbolIndex(newSymbol);
 
-            if (lastIndex == -1)
-                lastIndex = AddSymbolToTable(newSymbol);
-            else
-                UpdateSymbolTable(newSymbol);
-            return lastIndex;
+                if (lastIndex == -1)
+                    lastIndex = AddSymbolToTable(newSymbol);
+                else
+                    UpdateSymbolTable(newSymbol);
+                return lastIndex.ToString();
+            }
+            return "-";
         }
 
         private string GetLines(List<int> lines)

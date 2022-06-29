@@ -19,7 +19,7 @@
 
 ## 🧐 Sobre <a name = "sobre"></a>
 
-Projeto criado para exemplificar um analisador léxico para a linguagem DonkSoup na disciplina de Compiladores, ministrada pelo professor Osvaldo Requião Melo, do Centro Universitário Senai Cimatec.
+Projeto criado para exemplificar um analisador léxico (_Static Checker_) para a linguagem DonkSoup na disciplina de Compiladores, ministrada pelo professor Osvaldo Requião Melo, do Centro Universitário SENAI CIMATEC.
 
 ## 🏁 Iniciando <a name = "inicio"></a>
 
@@ -41,7 +41,7 @@ Após iniciar o programa, no terminal aberto basta inserir a localização do ar
 
 ## ✍️ Desenvolvedores <a name = "desenvolvedores"></a>
 
-- [@davi](https://github.com/seu-username)
-- [@fernandanlisboa](https://github.com/fernandanlisboa)
-- [@joao](https://github.com/Joao)
-- [@AmadoMaria](https://github.com/AmadoMaria)
+- Davi Costa - [@DMCDavi](https://github.com/DMCDavi)
+- Fernanda Lisboa - [@fernandanlisboa](https://github.com/fernandanlisboa)
+- João Caldas - [@jfdac11](https://github.com/jfdac11)
+- Maria Amado - [@AmadoMaria](https://github.com/AmadoMaria)
